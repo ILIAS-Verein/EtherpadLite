@@ -18,7 +18,7 @@ class EtherpadLiteClient {
   protected $baseUrl = "http://localhost:9001/api";
   protected $validateCurl = 1;
   
-  public function __construct($apiKey, $baseUrl = null, $validateCurl){
+  public function __construct($apiKey, $baseUrl = null, $validateCurl = false){
     $this->apiKey  = $apiKey;
     $this->validateCurl = $validateCurl;
     if (isset($baseUrl)){

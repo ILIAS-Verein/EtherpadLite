@@ -1,7 +1,5 @@
 <?php
 
-include_once("./Services/Component/classes/class.ilPluginConfigGUI.php");
-
 /**
  * EtherpadLite configuration user interface class
  *
@@ -9,6 +7,8 @@ include_once("./Services/Component/classes/class.ilPluginConfigGUI.php");
  * @author  Timon Amstutz <timon.amstutz@ilub.unibe.ch>
  * @author	Jan Rocho <jan.rocho@fh-dortmund.de>
  * @version $Id$
+ *
+ *  @ilCtrl_IsCalledBy ilEtherpadLiteConfigGUI: ilObjComponentSettingsGUI
  *
  */
 class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
@@ -75,7 +75,7 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
     /**
      * Handles all commmands, default is "configure"
      */
-    function performCommand($cmd)
+    function performCommand(string $cmd): void
     {
         switch($cmd)
         {
@@ -215,5 +215,3 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
     }
 
 }
-
-?>

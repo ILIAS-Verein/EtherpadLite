@@ -1,7 +1,5 @@
 <?php
 
-include_once("./Services/Repository/classes/class.ilRepositoryObjectPlugin.php");
- 
 /**
 * EtherpadLite repository object plugin
 *
@@ -11,8 +9,16 @@ include_once("./Services/Repository/classes/class.ilRepositoryObjectPlugin.php")
 */
 class ilEtherpadLitePlugin extends ilRepositoryObjectPlugin
 {
+	public const ID = "xpdl";
 
-	protected function uninstallCustom() {
+	public function __construct()
+	{
+		global $DIC;
+		$this->db = $DIC->database();
+		parent::__construct($this->db, $DIC["component.repository"], self::ID);
+	}
+
+	protected function uninstallCustom(): void {
                 global $DIC;
                 
                 $ilDB = $DIC['ilDB'];
@@ -25,7 +31,7 @@ class ilEtherpadLitePlugin extends ilRepositoryObjectPlugin
                 	$ilDB->dropTable('rep_robj_xpdl_adm_set');
     }
 
-	function getPluginName()
+	public function getPluginName(): string
 	{
 		return "EtherpadLite";
 	}
@@ -36,11 +42,10 @@ class ilEtherpadLitePlugin extends ilRepositoryObjectPlugin
 	 *
 	 * @return bool
 	 */
-	public function allowCopy()
+	public function allowCopy(): bool
 	{
 		return true;
 	}
 	// fau.
 
 }
-?>

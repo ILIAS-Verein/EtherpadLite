@@ -21,8 +21,6 @@
 	+-----------------------------------------------------------------------------+
 */
 
-include_once("./Services/Repository/classes/class.ilObjectPluginAccess.php");
-
 /**
 * Access/Condition checking for EtherpadLite object
 *
@@ -47,7 +45,7 @@ class ilObjEtherpadLiteAccess extends ilObjectPluginAccess
 	*
 	* @return	boolean		true, if everything is ok
 	*/
-	function _checkAccess($a_cmd, $a_permission, $a_ref_id, $a_obj_id, $a_user_id = "")
+	public function _checkAccess(string $a_cmd, string $a_permission, int $a_ref_id, int $a_obj_id, ?int $a_user_id = null): bool
 	{
 		global $DIC;
 		
@@ -90,5 +88,3 @@ class ilObjEtherpadLiteAccess extends ilObjectPluginAccess
 	}
 	
 }
-
-?>

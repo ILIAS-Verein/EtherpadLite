@@ -52,6 +52,3 @@ class ilEtherpadLiteConfig
         return (string)$record['epvalue'];
     }
 }
-
-
-?>
