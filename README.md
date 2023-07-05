@@ -1,8 +1,7 @@
 # Etherpad Lite Plugin for ILIAS #
 
-If you are using ILIAS 4.1 - 4.2 please use version 0.0.4 or the 'pre-43' branch: https://github.com/jrocho/ILIAS-Etherpad-Lite-Plugin/tags
-Refer to the README file contained in that version
-
+This is the successor of the successful Etherpad Lite Plugin for ILIAS by Jan Rocho. The old repository can be found [here](https://github.com/jrocho/ILIAS-Etherpad-Lite-Plugin).
+To change your existing plugins remote to this repository, simply use the following [instructions](#change-remote-repository).
 
 ## How to install: ##
 
@@ -101,7 +100,32 @@ As of Plugin v1.1.1 there is a new setting in the administration which sets the 
 
 As of v1.0.1 of this ILIAS plugin it is recommended to use Etherpad-Lite higher than v1.2.7
 
+
+### Change Remote Repository ###
+
+1. Check which name the old remote repository has. Usually it is origin.
+   ```bash
+   git remote -v
+   ```
+
+2. Use this name within the `git remote set-url` command and append either the pull URL for HTTPS or SSH of this new repository.
+   ```bash
+   git remote set-url origin https://github.com/ILIAS-Verein/EtherpadLite.git 
+   ```
+
+3. Check if the remote has been correctly set to the new URL and fetch the new repository.
+   ```bash
+   git remote -v
+   git fetch origin
+   ```
+
 ## Changelog ##
+
+### v1.8.0
+*supports ILIAS 8*
+
+- updated for ILIAS 8
+- PHP 8.0 compatibility 
 
 ### v1.6.0
 
@@ -243,7 +267,9 @@ Only available for ILIAS 4.3.
 
 ## Contact/Responsible ##
 
-Jan Rocho <jan.rocho@fh-dortmund.de>
+Fabian Wolf <wolf@ilias.de>
+
+By: Jan Rocho <jan.rocho@fh-dortmund.de>
 
 Contributions by: Timon Amstutz <timon.amstutz@ilub.unibe.ch>
 
@@ -254,5 +280,5 @@ Contributions by: Timon Amstutz <timon.amstutz@ilub.unibe.ch>
 Etherpad Lite PHP Client library (modified) from: 
 https://github.com/TomNomNom/etherpad-lite-client
 
-   Modified for HTTPS support
+   Modified for HTTPS and PHP 8.0 support
 
