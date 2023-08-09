@@ -1,6 +1,6 @@
 # Etherpad Lite Plugin for ILIAS #
 
-This is the successor of the successful Etherpad Lite Plugin for ILIAS by Jan Rocho. The old repository can be found [here](https://github.com/jrocho/ILIAS-Etherpad-Lite-Plugin).
+This is the successor of the successful Etherpad Lite Plugin for ILIAS by Jan Rocho. The old repository can be found [here](https://github.com/jrocho/ILIAS-Etherpad-Lite-Plugin). Since ILIAS 8, the maintainership of this plugin has been taken over by Fabian Wolf, ILIAS open source e-Learning e.V.
 To change your existing plugins remote to this repository, simply use the following [instructions](#change-remote-repository).
 
 ## How to install: ##
