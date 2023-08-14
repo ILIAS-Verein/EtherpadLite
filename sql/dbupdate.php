@@ -133,37 +133,37 @@ if(file_exists($file))
 {
 	$ini = new ilIniFile($file);
 	$ini->read();
-	
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'host','".$ini->readVariable("etherpadlite", "host")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'host');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'port','".$ini->readVariable("etherpadlite", "port")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'port');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'apikey','".$ini->readVariable("etherpadlite", "apikey")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'apikey');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'domain','".$ini->readVariable("etherpadlite", "domain")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'domain');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'https','".$ini->readVariable("etherpadlite", "https")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'https');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'defaulttext','".$ini->readVariable("etherpadlite", "defaulttext")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'defaulttext');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'old_group','".$ini->readVariable("etherpadlite", "group")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'old_group');";
-} else {
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'host','etherpad.ilias.local' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'host');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'port','9001' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'port');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'apikey','See in Apikey.txt' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'apikey');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'domain','.ilias.local' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'domain');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'https',false FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'https');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'defaulttext','Etherpad-Lite für Ilias' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'defaulttext');";
-	$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'old_group',NULL FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'old_group');";
-}
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_chat',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_chat');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_monospace_font',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_monospace_font');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_line_numbers',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_line_numbers');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_colors',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_colors');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_style',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_style');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_list',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_list');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_redo',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_redo');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_heading',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_heading');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_import_export',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_import_export');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_timeline',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_timeline');";
-$sql[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_coloring',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_coloring');";
 
-foreach($sql as $s)
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'host','".$ini->readVariable("etherpadlite", "host")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'host');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'port','".$ini->readVariable("etherpadlite", "port")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'port');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'apikey','".$ini->readVariable("etherpadlite", "apikey")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'apikey');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'domain','".$ini->readVariable("etherpadlite", "domain")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'domain');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'https','".$ini->readVariable("etherpadlite", "https")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'https');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'defaulttext','".$ini->readVariable("etherpadlite", "defaulttext")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'defaulttext');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'old_group','".$ini->readVariable("etherpadlite", "group")."' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'old_group');";
+} else {
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'host','etherpad.ilias.local' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'host');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'port','9001' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'port');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'apikey','See in Apikey.txt' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'apikey');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'domain','.ilias.local' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'domain');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'https',false FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'https');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'defaulttext','Etherpad-Lite für Ilias' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'defaulttext');";
+    $sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'old_group',NULL FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'old_group');";
+}
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_chat',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_chat');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_monospace_font',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_monospace_font');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_line_numbers',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_line_numbers');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_colors',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_colors');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_style',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_style');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_list',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_list');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_redo',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_redo');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_heading',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_heading');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_import_export',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_import_export');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_timeline',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_timeline');";
+$sql_statements[] = "INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'default_show_controls_default_show_coloring',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'default_show_controls_default_show_coloring');";
+
+foreach($sql_statements as $s)
 {
     $ilDB->manipulate($s);
 }
@@ -171,7 +171,7 @@ foreach($sql as $s)
 <#7>
 <?php
 // set all existing pads to old_pad, activate all features
-	
+
 	if($ilDB->tableColumnExists('rep_robj_xpdl_data','old_pad'))
 	{
 		$sql7[] = "UPDATE `rep_robj_xpdl_data` set old_pad = 1 where old_pad IS NULL";
@@ -187,7 +187,7 @@ foreach($sql as $s)
 		$sql7[] = "UPDATE `rep_robj_xpdl_data` set show_heading = 1 where show_heading IS NULL";
 		$sql7[] = "UPDATE `rep_robj_xpdl_data` set show_import_export = 1 where show_import_export IS NULL";
 		$sql7[] = "UPDATE `rep_robj_xpdl_data` set show_timeline = 1 where show_timeline IS NULL";
-		
+
 		foreach($sql7 as $s7)
 		{
 			$res = $ilDB->query($s7);
@@ -195,7 +195,9 @@ foreach($sql as $s)
 	}
 ?>
 <#8>
-
+<?php
+ // skipped
+?>
 <#9>
 <?php
 	// tables which need to be updated
@@ -204,24 +206,21 @@ foreach($sql as $s)
 						'line_numbers',
 						'show_colors',
 						'show_chat');
-						
+
 	foreach($update_tables as $table)
 	{
-		$res = $ilDB->query('ALTER TABLE `rep_robj_xpdl_data` CHANGE `'.$table.'` `'.$table.'` TINYINT( 1 ) NULL DEFAULT NULL');		
+		$res = $ilDB->query('ALTER TABLE `rep_robj_xpdl_data` CHANGE `'.$table.'` `'.$table.'` TINYINT( 1 ) NULL DEFAULT NULL');
 	}
-	
-?>
 
+?>
 <#10>
 <?php
 	$res = $ilDB->query("INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'path',NULL FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'path');");
 ?>
-
 <#11>
 <?php
 	$res = $ilDB->query("INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'https_validate_curl',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'https_validate_curl');");
 ?>
-
 <#12>
 <?php
     if(!$ilDB->tableColumnExists("rep_robj_xpdl_data", "read_only_id"))
@@ -236,57 +235,57 @@ foreach($sql as $s)
 	$res = $ilDB->query($query);
     }
 ?>
-
 <#13>
 <?php
     include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/classes/class.ilEtherpadLiteConfig.php");
     require_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/libs/etherpad-lite-client/etherpad-lite-client.php");
-    
+
     $adminSettings = new ilEtherpadLiteConfig();
-		
+
     try
     {
-	
+
 	$query = "SELECT id, epadl_id FROM rep_robj_xpdl_data WHERE read_only_id = ''";
-	$ids = $ilDB->query($query)->fetchAll();
-	
-	$epCon = new EtherpadLiteClient($adminSettings->getValue("apikey"), ($adminSettings->getValue("https") ? "https" : "http"). '://' . 
+	$res = $ilDB->query($query);
+	$ids = [];
+	while ($item = $ilDB->fetchAssoc($res)) {
+		$ids[] = $item;
+	}
+
+	$epCon = new EtherpadLiteClient($adminSettings->getValue("apikey"), ($adminSettings->getValue("https") ? "https" : "http"). '://' .
 			$adminSettings->getValue("host") . ':' . $adminSettings->getValue("port") . $adminSettings->getValue("path") . '/api',
             		$adminSettings->getValue("https_validate_curl"));
 
         foreach ($ids as $id) {
-    	    $roid_a = $epCon->getReadOnlyID($id["1"]);
+    	    $roid_a = $epCon->getReadOnlyID($id["epadl_id"]);
     	    $roid = $roid_a->readOnlyID;
-    	    $rid = $id["0"];
-    
+    	    $rid = $id["id"];
+
     	    $query = "UPDATE rep_robj_xpdl_data SET read_only_id = '$roid' WHERE id = '$rid'";
     	    $res = $ilDB->query($query);
         }
-            		
+
     }
     catch (Exception $e)
     {
         include_once("./Services/UICore/exceptions/class.ilCtrlException.php");
         throw new ilCtrlException($e->getMessage());
     }
-    
+?>
 <#14>
 <?php
 	$res = $ilDB->query("INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'allow_read_only',true FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'allow_read_only');");
 ?>
-
 <#15>
 <?php
-	$res = $ilDB->query("INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'epadl_version',130 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'epadl_version');");	
+	$res = $ilDB->query("INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'epadl_version',130 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'epadl_version');");
 ?>
-
 <#16>
 <?php
-	$res = $ilDB->query("UPDATE `lng_data` set `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_import_expo' where `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_import_expo' and `lang_key` = 'en'");	
-	$res = $ilDB->query("UPDATE `lng_data` set `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_imp_expo' where `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_import_expo' and `lang_key` = 'de'");	
+	$res = $ilDB->query("UPDATE `lng_data` set `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_import_expo' where `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_import_expo' and `lang_key` = 'en'");
+	$res = $ilDB->query("UPDATE `lng_data` set `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_imp_expo' where `identifier` = 'rep_robj_xpdl_default_show_controls_default_show_import_expo' and `lang_key` = 'de'");
 ?>
-
 <#17>
 <?php
-	$res = $ilDB->query("INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'allow_read_only_readonly_disable_export',0 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'allow_read_only_readonly_disable_export');");	
+	$res = $ilDB->query("INSERT INTO `rep_robj_xpdl_adm_set` (epkey, epvalue) SELECT 'allow_read_only_readonly_disable_export',0 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM rep_robj_xpdl_adm_set WHERE epkey = 'allow_read_only_readonly_disable_export');");
 ?>
