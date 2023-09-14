@@ -338,8 +338,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         $ilCtrl = $DIC['ilCtrl'];
 
         $this->initPropertiesForm();
-        if ($this->form->checkInput())
-        {
+        if ($this->form->checkInput()) {
             $this->object->setTitle($this->form->getInput("title"));
             $this->object->setDescription($this->form->getInput("desc"));
             $this->object->setEtherpadLiteID($this->form->getInput("epadl_id"));
@@ -359,17 +358,13 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
             $this->object->setReadOnly($this->form->getInput("read_only"));
 
             $this->object->update();
-			$this->tpl->setOnScreenMessage("success", $this->plugin->txt("msg_obj_modified"), true);
+            $this->tpl->setOnScreenMessage("success", $this->lng->txt("msg_obj_modified"), true);
             $ilCtrl->redirect($this, "editProperties");
         }
 
         $this->form->setValuesByPost();
         $tpl->setContent($this->form->getHtml());
     }
-
-//
-// Show content
-//
 
     /**
      * Show content
