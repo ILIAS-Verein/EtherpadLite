@@ -102,7 +102,8 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         $ilTabs = $DIC['ilTabs'];
         $ilCtrl = $DIC['ilCtrl'];
         $ilAccess = $DIC['ilAccess'];
-
+        $DIC->help()->setScreenIdComponent($this->getPlugin()->getId());
+        $DIC->help()->setScreenId($this->getPlugin()->getId() . "_objective");
         // tab for the "show content" command
         if ($ilAccess->checkAccess("read", "", $this->object->getRefId()))
         {
@@ -138,6 +139,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         $ilTabs = $DIC['ilTabs'];
 
         $ilTabs->activateTab("properties");
+        $DIC->help()->setSubScreenId("properties");
         $this->initPropertiesForm();
         $this->getPropertiesValues();
         $tpl->setContent($this->form->getHTML());
@@ -383,6 +385,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
             $this->object->init();
             $ilTabs->activateTab("content");
+            $DIC->help()->setSubScreenId("content");
             $tpl->addCss("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/templates/css/etherpad.css");
             $tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/js/ilEtherpadLite.js");
 
@@ -438,6 +441,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         } catch (\Firebase\JWT\ExpiredException $e)
         {
             $ilTabs->activateTab("content");
+            $DIC->help()->setSubScreenId("content");
             $tpl->setContent($this->txt("load_error")." ".$e->getMessage());
         }
 

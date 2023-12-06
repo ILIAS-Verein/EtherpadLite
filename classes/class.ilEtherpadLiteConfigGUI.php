@@ -95,7 +95,8 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
         global $DIC;
         
         $tpl = $DIC['tpl'];
-
+        $DIC->help()->setScreenIdComponent($this->getPluginObject()->getId());
+        $DIC->help()->setScreenId("adm");
         $this->initConfigurationForm();
         $this->getValues();
         $tpl->setContent($this->form->getHTML());
