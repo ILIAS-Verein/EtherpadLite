@@ -121,6 +121,13 @@ As of v1.0.1 of this ILIAS plugin it is recommended to use Etherpad-Lite higher 
 
 ## Changelog ##
 
+### v1.9.0
+*supports ILIAS 9*
+
+- updated for ILIAS 9
+- PHP 8.1 and 8.2 compatibility
+- added screen ids for online help integration
+
 ### v1.8.0
 *supports ILIAS 8*
 
