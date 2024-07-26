@@ -1,24 +1,24 @@
 <?php
 /*
-	+-----------------------------------------------------------------------------+
-	| EtherpadLite ILIAS Plugin                                                        |
-	+-----------------------------------------------------------------------------+
-	| Copyright (c) 2012-2013 Jan Rocho										      |
-	|                                                                             |
-	| This program is free software; you can redistribute it and/or               |
-	| modify it under the terms of the GNU General Public License                 |
-	| as published by the Free Software Foundation; either version 2              |
-	| of the License, or (at your option) any later version.                      |
-	|                                                                             |
-	| This program is distributed in the hope that it will be useful,             |
-	| but WITHOUT ANY WARRANTY; without even the implied warranty of              |
-	| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               |
-	| GNU General Public License for more details.                                |
-	|                                                                             |
-	| You should have received a copy of the GNU General Public License           |
-	| along with this program; if not, write to the Free Software                 |
-	| Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. |
-	+-----------------------------------------------------------------------------+
+    +-----------------------------------------------------------------------------+
+    | EtherpadLite ILIAS Plugin                                                   |
+    +-----------------------------------------------------------------------------+
+    | Copyright (c) 2012-2013 Jan Rocho										      |
+    |                                                                             |
+    | This program is free software; you can redistribute it and/or               |
+    | modify it under the terms of the GNU General Public License                 |
+    | as published by the Free Software Foundation; either version 2              |
+    | of the License, or (at your option) any later version.                      |
+    |                                                                             |
+    | This program is distributed in the hope that it will be useful,             |
+    | but WITHOUT ANY WARRANTY; without even the implied warranty of              |
+    | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               |
+    | GNU General Public License for more details.                                |
+    |                                                                             |
+    | You should have received a copy of the GNU General Public License           |
+    | along with this program; if not, write to the Free Software                 |
+    | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. |
+    +-----------------------------------------------------------------------------+
 */
 
 /**
@@ -31,25 +31,48 @@
 */
 class ilObjEtherpadLite extends ilObjectPlugin
 {
-	/**
-	* Constructor
-	*
-	* @access	public
-	*/
-	public function __construct($a_ref_id = 0)
-	{                		
-		include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/classes/class.ilEtherpadLiteConfig.php");
-		$this->adminSettings = new ilEtherpadLiteConfig();
-		parent::__construct($a_ref_id);
-	}
-	
-	public function init()
-	{
-		$this->connectToEtherpad();
+    private ilEtherpadLiteConfig $adminSettings;
+    private bool $ReadOnlyID;
+    private bool $ReadOnly;
+    private string $EtherpadText;
+    private bool $oldEtherpad;
+    private bool $showTimeline;
+    private bool $showChat;
+    private bool $showColoring;
+    private $online;
+    private $etherpadlite_id;
+    private EtherpadLiteClient $epadlconnect;
+    private mixed $epadlusermapper;
+    private bool $showRedo;
+    private bool $showImportExport;
+    private bool $showHeading;
+    private bool $lineNumbers;
+    private bool $monospaceFont;
+    private bool $showColors;
+    private bool $showControls;
+    private bool $showStyle;
+    private bool $showList;
+    private mixed $epadlgroupmapper;
+
+    /**
+    * Constructor
+    *
+    * @access	public
+    */
+    public function __construct($a_ref_id = 0)
+    {
+        include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/classes/class.ilEtherpadLiteConfig.php");
+        $this->adminSettings = new ilEtherpadLiteConfig();
+        parent::__construct($a_ref_id);
+    }
+    
+    public function init()
+    {
+        $this->connectToEtherpad();
         $this->setSession();
-	}
-	
-	/**
+    }
+    
+    /**
      * Sets up connection to Etherpad
      *
      * @access	protected
@@ -61,25 +84,21 @@ class ilObjEtherpadLite extends ilObjectPlugin
         
         $ilUser = $DIC['ilUser'];
 
-        try
-        {
-            $this->setEtherpadLiteConnection(new EtherpadLiteClient($this->adminSettings->getValue("apikey"), 
-            	($this->adminSettings->getValue("https") ? "https" : "http"). '://' . $this->adminSettings->getValue("host") . ':' . 
-            	$this->adminSettings->getValue("port") . $this->adminSettings->getValue("path") . '/api',
-            	$this->adminSettings->getValue("https_validate_curl")));
-            	
-            if($this->isOldEtherpad())
-            {
-            	$this->setEtherpadLiteGroupMapper($this->getEtherpadLiteConnection()->createGroupIfNotExistsFor($this->adminSettings->getValue("old_group")));	
-			}
-			else
-			{
-            	$this->setEtherpadLiteGroupMapper($this->getEtherpadLiteConnection()->createGroupIfNotExistsFor($this->getId()));
+        try {
+            $this->setEtherpadLiteConnection(new EtherpadLiteClient(
+                $this->adminSettings->getValue("apikey"),
+                ($this->adminSettings->getValue("https") ? "https" : "http"). '://' . $this->adminSettings->getValue("host") . ':' .
+                $this->adminSettings->getValue("port") . $this->adminSettings->getValue("path") . '/api',
+                $this->adminSettings->getValue("https_validate_curl")
+            ));
+                
+            if($this->isOldEtherpad()) {
+                $this->setEtherpadLiteGroupMapper($this->getEtherpadLiteConnection()->createGroupIfNotExistsFor($this->adminSettings->getValue("old_group")));
+            } else {
+                $this->setEtherpadLiteGroupMapper($this->getEtherpadLiteConnection()->createGroupIfNotExistsFor($this->getId()));
             }
             $this->setEtherpadLiteUserMapper($this->getEtherpadLiteConnection()->createAuthorIfNotExistsFor($ilUser->id, $ilUser->firstname . ' ' . $ilUser->lastname));
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             throw new ilCtrlException($e->getMessage());
         }
 
@@ -87,36 +106,33 @@ class ilObjEtherpadLite extends ilObjectPlugin
     
     /**
      * Check if this is an old etherpad
-	 *
-	 * TODO: Rewrite query
+     *
+     * TODO: Rewrite query
      *
      * @access	protected
      */
     protected function isOldEtherpad()
     {
-    	global $DIC;
-    	
-    	$ilDB = $DIC['ilDB'];
+        global $DIC;
+        
+        $ilDB = $DIC['ilDB'];
     
-    	$r = $ilDB->query("SELECT * FROM rep_robj_xpdl_data ".
-			" WHERE id = ".$ilDB->quote($this->getId(), "integer")
-			);
-		
-		if ($r->numRows() == 1)
-		{
-			if(class_exists('ilDBConstants')) 
-			{
-				$rec = $r->fetchRow(ilDBConstants::FETCHMODE_ASSOC);
-			}
-			else
-			{
-				$rec = $r->fetchRow(ilDBConstants::FETCHMODE_OBJECT);
-			}
+        $r = $ilDB->query(
+            "SELECT * FROM rep_robj_xpdl_data ".
+            " WHERE id = ".$ilDB->quote($this->getId(), "integer")
+        );
+        
+        if ($r->numRows() == 1) {
+            if(class_exists('ilDBConstants')) {
+                $rec = $r->fetchRow(ilDBConstants::FETCHMODE_ASSOC);
+            } else {
+                $rec = $r->fetchRow(ilDBConstants::FETCHMODE_OBJECT);
+            }
 
-			return $rec['old_pad'];
-		}
-				
-		return false;
+            return $rec['old_pad'];
+        }
+                
+        return false;
     }
     
     /**
@@ -124,29 +140,22 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     protected function setSession()
     {
-        try
-        {
+        try {
             //check if pad still exists in database (maybe the pad is deleted in etherpadlite-database but not in ilias), if it does not exist, throw error accordingly
             $pad = $this->getEtherpadLiteConnection()->listPads($this->getEtherpadLiteGroupMapper());
-            if($pad->padIDs==null)
-            {
+            if($pad->padIDs==null) {
                 throw new ilCtrlException($this->txt("error_not_found_in_db"));
             }
             //check if valid Session for this user in this group already exists
             $sessionID = null;
             $sessionList = $this->getEtherpadLiteConnection()->listSessionsOfGroup($this->getEtherpadLiteGroupMapper());
             
-            if (isset($sessionList))
-            {
-                foreach ($sessionList as $sessionKey => $sessionData)
-                {
-                    if ($sessionID !== null && $this->getEtherpadLiteUserMapper() == $sessionData->authorID)
-                    {
-                        if ($sessionID->validUntil > time())
-                        {
+            if (isset($sessionList)) {
+                foreach ($sessionList as $sessionKey => $sessionData) {
+                    if ($sessionID !== null && $this->getEtherpadLiteUserMapper() == $sessionData->authorID) {
+                        if ($sessionID->validUntil > time()) {
                             $sessionID = $sessionKey;
-                        } else
-                        {
+                        } else {
                             $this->getEtherpadLiteConnection()->deleteSession($sessionKey);
                         }
                     }
@@ -154,33 +163,30 @@ class ilObjEtherpadLite extends ilObjectPlugin
             }
 
             //if no valid Session exists, create a new one
-            if ($sessionID == null)
-            {
+            if ($sessionID == null) {
                 $validUntil = mktime(0, 0, 0, (int) date("m"), ((int) date("d")) + 1, (int) date("y")); // One day in the futur
                 $sessionID  = $this->getEtherpadLiteConnection()->createSession($this->getEtherpadLiteGroupMapper(), $this->getEtherpadLiteUserMapper(), $validUntil);
                 $sessionID  = $sessionID->sessionID;
             }
             setcookie('sessionID', $sessionID, 0, '/', $this->adminSettings->getValue("domain"), $this->adminSettings->getValue("https") ? "secure" : "");
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             throw new ilCtrlException($e->getMessage());
         }
 
     }
 
-	/**
-	* Get type.
-	*/
-	final function initType(): void
-	{
-		$this->setType("xpdl");
-	}
-	
-	/**
-	* Create object
-	*/
-	protected function doCreate(bool $clone_mode = false): void
+    /**
+    * Get type.
+    */
+    protected function initType(): void
+    {
+        $this->setType("xpdl");
+    }
+    
+    /**
+    * Create object
+    */
+    protected function doCreate(bool $clone_mode = false): void
     {
         global $DIC;
         
@@ -188,14 +194,15 @@ class ilObjEtherpadLite extends ilObjectPlugin
         
         $this->connectToEtherpad();
         $tempID = $this->getEtherpadLiteConnection()
-			->createGroupPad($this->getEtherpadLiteGroupMapper(),
-				$this->genRandomString(),
-				$this->adminSettings->getValue("defaulttext")
-			);
+            ->createGroupPad(
+                $this->getEtherpadLiteGroupMapper(),
+                $this->genRandomString(),
+                $this->adminSettings->getValue("defaulttext")
+            );
         $this->setEtherpadLiteID($tempID->padID);
         
         $readOnlyID =  $this->getEtherpadLiteConnection()->getReadOnlyID($this->getEtherpadLiteID());
-		$this->setReadOnlyID($readOnlyID->readOnlyID);
+        $this->setReadOnlyID($readOnlyID->readOnlyID);
 
         $ilDB->manipulate("INSERT INTO rep_robj_xpdl_data (id, is_online, epadl_id,show_controls,
                                 line_numbers,show_colors,show_chat,monospace_font,show_style,show_list,
@@ -207,7 +214,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
             $ilDB->quote($this->adminSettings->getValue("default_show_controls"), "integer") . "," .
             $ilDB->quote($this->adminSettings->getValue("default_line_numbers"), "integer") . "," .
             $ilDB->quote($this->adminSettings->getValue("default_show_colors"), "integer") . "," .
-			$ilDB->quote($this->adminSettings->getValue("default_show_chat"), "integer") . "," .
+            $ilDB->quote($this->adminSettings->getValue("default_show_chat"), "integer") . "," .
             $ilDB->quote($this->adminSettings->getValue("default_monospace_font"), "integer") . "," .
             $ilDB->quote($this->adminSettings->getValue("default_show_controls_default_show_style"), "integer") . "," .
             $ilDB->quote($this->adminSettings->getValue("default_show_controls_default_show_list"), "integer") . "," .
@@ -217,7 +224,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
             $ilDB->quote($this->adminSettings->getValue("default_show_controls_default_show_imp_exp"), "integer") . "," .
             $ilDB->quote($this->adminSettings->getValue("default_show_controls_default_show_timeline"), "integer") . "," .
             $ilDB->quote(0, "integer") . "," .
-            $ilDB->quote($this->getReadonlyID(), "text") . "," . 
+            $ilDB->quote($this->getReadonlyID(), "text") . "," .
             $ilDB->quote(0, "integer") .
             ")");
 
@@ -225,21 +232,21 @@ class ilObjEtherpadLite extends ilObjectPlugin
 
 
     }
-	
-	/**
+    
+    /**
      * Read data from db
      */
-	protected function doRead(): void
+    protected function doRead(): void
     {
         global $DIC;
         
         $ilDB = $DIC['ilDB'];
 
-        $set = $ilDB->query("SELECT * FROM rep_robj_xpdl_data " .
+        $set = $ilDB->query(
+            "SELECT * FROM rep_robj_xpdl_data " .
                 " WHERE id = " . $ilDB->quote($this->getId(), "integer")
         );
-        while ($rec = $ilDB->fetchAssoc($set))
-        {
+        while ($rec = $ilDB->fetchAssoc($set)) {
             $this->setOnline($rec["is_online"]);
             $this->setEtherpadLiteID($rec["epadl_id"]);
             $this->setShowControls($rec["show_controls"]);
@@ -255,7 +262,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
             $this->setShowImportExport($rec["show_import_export"]);
             $this->setShowTimeline($rec["show_timeline"]);
             $this->setOldEtherpad($rec["old_pad"]);
-            $this->setReadOnlyID($rec["read_only_id"]); 
+            $this->setReadOnlyID($rec["read_only_id"]);
             $this->setReadOnly($rec["read_only"]);
         }
         
@@ -268,7 +275,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      * @var int $a_copy_id
      */
 
-	protected function doCloneObject(ilObject2 $new_obj, int $a_target_id, ?int $a_copy_id = null): void
+    protected function doCloneObject(ilObject2 $new_obj, int $a_target_id, ?int $a_copy_id = null): void
     {
         $new_obj->setOnline($this->getOnline());
         $new_obj->setShowControls($this->getShowControls());
@@ -292,13 +299,14 @@ class ilObjEtherpadLite extends ilObjectPlugin
     /**
      * Update data
      */
-	protected function doUpdate(): void
+    protected function doUpdate(): void
     {
         global $DIC;
         
         $ilDB = $DIC['ilDB'];
 
-        $ilDB->manipulate($up = "UPDATE rep_robj_xpdl_data SET " .
+        $ilDB->manipulate(
+            $up = "UPDATE rep_robj_xpdl_data SET " .
                 " is_online = " . $ilDB->quote($this->getOnline(), "integer") . "," .
                 " epadl_id = " . $ilDB->quote($this->getEtherpadLiteID(), "text") . "," .
                 " show_controls = " . $ilDB->quote($this->getShowControls(), "integer"). "," .
@@ -312,56 +320,57 @@ class ilObjEtherpadLite extends ilObjectPlugin
                 " show_coloring = " . $ilDB->quote($this->GetShowColoring(), "integer"). "," .
                 " show_heading = " . $ilDB->quote($this->getShowHeading(), "integer"). "," .
                 " show_import_export = " . $ilDB->quote($this->getShowImportExport(), "integer"). "," .
-                " show_timeline = " . $ilDB->quote($this->getShowTimeline(), "integer"). "," . 
-                " read_only_id = " . $ilDB->quote($this->getReadOnlyID(), "text"). "," . 
+                " show_timeline = " . $ilDB->quote($this->getShowTimeline(), "integer"). "," .
+                " read_only_id = " . $ilDB->quote($this->getReadOnlyID(), "text"). "," .
                 " read_only = " . $ilDB->quote($this->getReadOnly(), "integer").
                 " WHERE id = " . $ilDB->quote($this->getId(), "integer")
         );
     }
-	
-	/**
-	* Delete data from db
-	*/
-	protected function doDelete(): void
-	{
-		global $DIC;
+    
+    /**
+    * Delete data from db
+    */
+    protected function doDelete(): void
+    {
+        global $DIC;
         
         $ilDB = $DIC['ilDB'];
-		$ilLog = $DIC['ilLog'];
+        $ilLog = $DIC['ilLog'];
 
-		// fetch etherpad ID
-		$set = $ilDB->query("SELECT * FROM rep_robj_xpdl_data ".
-			" WHERE id = ".$ilDB->quote($this->getId(), "integer")
-			);
-		while ($rec = $ilDB->fetchAssoc($set))
-		{
-			$this->setEtherpadLiteID($rec["epadl_id"]);
-		}
+        // fetch etherpad ID
+        $set = $ilDB->query(
+            "SELECT * FROM rep_robj_xpdl_data ".
+            " WHERE id = ".$ilDB->quote($this->getId(), "integer")
+        );
+        while ($rec = $ilDB->fetchAssoc($set)) {
+            $this->setEtherpadLiteID($rec["epadl_id"]);
+        }
 
-		// (try to) delete pad on etherpad server
-		$ilLog->write("Delete Pad ID: ".$this->getEtherpadLiteID());
-		try {
-			$this->connectToEtherpad();
-			$this->getEtherpadLiteConnection()->deletePad($this->getEtherpadLiteID());
-		} catch (Exception $e) {
-			$ilLog->write("Pad could not be deleted: " . $e->getMessage());
-		}
+        // (try to) delete pad on etherpad server
+        $ilLog->write("Delete Pad ID: ".$this->getEtherpadLiteID());
+        try {
+            $this->connectToEtherpad();
+            $this->getEtherpadLiteConnection()->deletePad($this->getEtherpadLiteID());
+        } catch (Exception $e) {
+            $ilLog->write("Pad could not be deleted: " . $e->getMessage());
+        }
 
-		// delete data from db
-		$ilDB->manipulate("DELETE FROM rep_robj_xpdl_data WHERE ".
-			" id = ".$ilDB->quote($this->getId(), "integer")
-		);
-	}
-		
-	
-//
-// Set/Get Methods
-//
-/**
-     * Set online
-     *
-     * @param    boolean        online
-     */
+        // delete data from db
+        $ilDB->manipulate(
+            "DELETE FROM rep_robj_xpdl_data WHERE ".
+            " id = ".$ilDB->quote($this->getId(), "integer")
+        );
+    }
+        
+    
+    //
+    // Set/Get Methods
+    //
+    /**
+         * Set online
+         *
+         * @param    boolean $a_val online
+         */
     public function setOnline($a_val)
     {
         $this->online = $a_val;
@@ -380,7 +389,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
     /**
      * Set etherpad lite id
      *
-     * @param    integer        etherpad lite id
+     * @param    integer $a_val etherpad lite id
      */
     public function setEtherpadLiteID($a_val)
     {
@@ -480,8 +489,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowChat()
     {
-        if(!$this->adminSettings->getValue("conf_show_chat"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_chat")) {
             return $this->adminSettings->getValue("default_show_chat");
         }
         return $this->showChat;
@@ -504,8 +512,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getLineNumbers()
     {
-        if(!$this->adminSettings->getValue("conf_line_numbers"))
-        {
+        if(!$this->adminSettings->getValue("conf_line_numbers")) {
             return $this->adminSettings->getValue("default_line_numbers");
         }
         return $this->lineNumbers;
@@ -528,8 +535,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getMonospaceFont()
     {
-        if(!$this->adminSettings->getValue("conf_monospace_font"))
-        {
+        if(!$this->adminSettings->getValue("conf_monospace_font")) {
             return $this->adminSettings->getValue("default_monospace_font");
         }
         return $this->monospaceFont;
@@ -552,8 +558,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowColors()
     {
-        if(!$this->adminSettings->getValue("conf_show_colors"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_colors")) {
             return $this->adminSettings->getValue("default_show_colors");
         }
         return $this->showColors;
@@ -576,8 +581,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowControls()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls")) {
             return $this->adminSettings->getValue("default_show_controls");
         }
         return $this->showControls;
@@ -600,8 +604,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowStyle()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_style"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_style")) {
             return $this->adminSettings->getValue("default_show_controls_default_show_style");
         }
         return $this->showStyle;
@@ -624,8 +627,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowList()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_list"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_list")) {
             return $this->adminSettings->getValue("default_show_controls_default_show_list");
         }
         return $this->showList;
@@ -649,8 +651,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowRedo()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_redo"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_redo")) {
             return $this->adminSettings->getValue("default_show_controls_default_show_redo");
         }
         return $this->showRedo;
@@ -673,8 +674,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowColoring()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_coloring"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_coloring")) {
             return $this->adminSettings->getValue("default_show_controls_default_show_coloring");
         }
         return $this->showColoring;
@@ -697,8 +697,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowHeading()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_heading"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_heading")) {
             return $this->adminSettings->getValue("default_show_controls_default_show_heading");
         }
         return $this->showHeading;
@@ -721,8 +720,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowImportExport()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_import_export"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_import_export")) {
             return $this->adminSettings->getValue("default_show_controls_default_show_imp_exp");
         }
         return $this->showImportExport;
@@ -745,17 +743,16 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getShowTimeline()
     {
-        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_timeline"))
-        {
+        if(!$this->adminSettings->getValue("conf_show_controls_conf_show_timeline")) {
             return $this->adminSettings->getValue("default_show_controls_default_show_timeline");
         }
         return $this->showTimeline;
     }
 
-	/**
+    /**
      * Set Status if this is an old Etherpad (pre 0.0.8)
      *
-     * @param  boolean  $a_val 
+     * @param  boolean  $a_val
      */
     public function setOldEtherpad($a_val)
     {
@@ -775,7 +772,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
     /**
      * Set text of Etherpad
      *
-     * @param  string  $a_val 
+     * @param  string  $a_val
      */
     public function setEtherpadText($a_val)
     {
@@ -795,11 +792,11 @@ class ilObjEtherpadLite extends ilObjectPlugin
     /**
      * Set readonly of Etherpad
      *
-     * @param  boolean  $a_val 
+     * @param  boolean  $a_val
      */
     public function setReadOnly($a_val)
     {
-		$this->ReadOnly = $a_val;
+        $this->ReadOnly = $a_val;
     }
     
     /**
@@ -809,17 +806,17 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getReadOnly()
     {
-		return $this->ReadOnly;
+        return $this->ReadOnly;
     }
     
     /**
      * Set readonlyID of Etherpad
      *
-     * @param  boolean  $a_val 
+     * @param  boolean  $a_val
      */
     public function setReadOnlyID($a_val)
     {
-		$this->ReadOnlyID = $a_val;
+        $this->ReadOnlyID = $a_val;
     }
     
     /**
@@ -829,21 +826,22 @@ class ilObjEtherpadLite extends ilObjectPlugin
      */
     public function getReadOnlyID()
     {
-		return $this->ReadOnlyID;
+        return $this->ReadOnlyID;
     }
-	
-	/**
-	* Generates random string for pad name
-	*
-	* @return string  random_pad_name
-	*/
-	function genRandomString() {
-		$length = 20;
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-		$string = '';
-			for ($p = 0; $p < $length; $p++) {
-			  $string .= substr($characters, mt_rand(0, strlen($characters)) - 1, 1);
-			}
-		return $string;
-	}
+    
+    /**
+    * Generates random string for pad name
+    *
+    * @return string  random_pad_name
+    */
+    public function genRandomString()
+    {
+        $length = 20;
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $string = '';
+        for ($p = 0; $p < $length; $p++) {
+            $string .= substr($characters, mt_rand(0, strlen($characters)) - 1, 1);
+        }
+        return $string;
+    }
 }

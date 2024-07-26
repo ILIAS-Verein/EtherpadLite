@@ -13,6 +13,8 @@
  */
 class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
 {
+    private ilEtherpadLiteConfig $object;
+    private ilPropertyFormGUI $form;
 
     /**
      * @var array
@@ -23,11 +25,11 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
         "apikey"                    => array("type"=>"ilTextInputGUI","info"=>"info_apikey","options"=>null,"subelements"=>null),
         "domain"                    => array("type"=>"ilTextInputGUI","info"=>"info_domain","options"=>null,"subelements"=>null),
         "https"                     => array("type"=>"ilCheckboxInputGUI","info"=>"info_https","options"=>null,"subelements"=>array(
-    				"validate_curl"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_validate_curl","options"=>null))
+                    "validate_curl"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_validate_curl","options"=>null))
         ),
         "epadl_version"				=> array("type"=>"ilSelectInputGUI","info"=>"info_epadl_version","options"=>array(
-        			"130" => "<= v1.3.0",
-        			"140" => ">= v1.4.0"
+                    "130" => "<= v1.3.0",
+                    "140" => ">= v1.4.0"
         ),"subelements"=>null),
         "path"                  	=> array("type"=>"ilTextInputGUI","info"=>"info_path","options"=>null,"subelements"=>null),
         "defaulttext"               => array("type"=>"ilTextAreaInputGUI","info"=>"info_defaulttext","options"=>null,"subelements"=>null),
@@ -46,9 +48,9 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
         "conf_show_colors"          => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_colors","options"=>null,"subelements"=>null),
         
         "allow_read_only"      => array("type"=>"ilCheckboxInputGUI","info"=>"info_allow_read_only","options"=>null,"subelements"=>array(
-        			"readonly_disable_export"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_readonly_disable_export","options"=>null)
-        	),
-		),
+                    "readonly_disable_export"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_readonly_disable_export","options"=>null)
+            ),
+        ),
         "default_show_controls"     => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_controls","options"=>null,"subelements"=>array(
                     "default_show_style"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_style","options"=>null),
                     "default_show_list"         => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_list","options"=>null),
@@ -75,10 +77,9 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
     /**
      * Handles all commmands, default is "configure"
      */
-    function performCommand(string $cmd): void
+    public function performCommand(string $cmd): void
     {
-        switch($cmd)
-        {
+        switch($cmd) {
             case "configure":
             case "save":
                 $this->$cmd();
@@ -90,7 +91,7 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
     /**
      * Configure screen
      */
-    function configure()
+    public function configure()
     {
         global $DIC;
         
@@ -105,14 +106,11 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
 
     public function getValues()
     {
-        foreach($this->fields as $key => $item)
-        {
+        foreach($this->fields as $key => $item) {
 
             $values[$key] = $this->object->getValue($key);
-            if(is_array($item["subelements"]))
-            {
-                foreach($item["subelements"] as $subkey => $subitem)
-                {
+            if(is_array($item["subelements"])) {
+                foreach($item["subelements"] as $subkey => $subitem) {
                     $values[$key . "_" . $subkey] = $this->object->getValue($key . "_" . $subkey);
                 }
             }
@@ -141,26 +139,21 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
         $this->form = new ilPropertyFormGUI();
 
 
-        foreach($this->fields as $key => $item)
-        {
+        foreach($this->fields as $key => $item) {
             $field = new $item["type"]($this->plugin_object->txt($key), $key);
             $field->setInfo($this->plugin_object->txt($item["info"]));
-            if(is_array($item["options"]))
-            {
-            	$field->setOptions($item["options"]);
+            if(is_array($item["options"])) {
+                $field->setOptions($item["options"]);
             }
             
-            if(is_array($item["subelements"]))
-            {
-                foreach($item["subelements"] as $subkey => $subitem)
-                {
+            if(is_array($item["subelements"])) {
+                foreach($item["subelements"] as $subkey => $subitem) {
                     $subfield = new $subitem["type"]($this->plugin_object->txt($key . "_" . $subkey), $key . "_" . $subkey);
                     $subfield->setInfo($this->plugin_object->txt($subitem["info"]));
                     $field->addSubItem($subfield);
-                    if(is_array($subitem["options"]))
-					{
-						$field->setOptions($subitem["options"]);
-					}
+                    if(is_array($subitem["options"])) {
+                        $field->setOptions($subitem["options"]);
+                    }
                 }
             }
 
@@ -188,18 +181,14 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
         $ilCtrl = $DIC['ilCtrl'];
 
         $this->initConfigurationForm();
-        if($this->form->checkInput())
-        {
+        if($this->form->checkInput()) {
 
             // Save Checkbox Values
-            foreach($this->fields as $key => $item)
-            {
+            foreach($this->fields as $key => $item) {
 
                 $this->object->setValue($key, $this->form->getInput($key));
-                if(is_array($item["subelements"]))
-                {
-                    foreach($item["subelements"] as $subkey => $subitem)
-                    {
+                if(is_array($item["subelements"])) {
+                    foreach($item["subelements"] as $subkey => $subitem) {
                         $this->object->setValue($key . "_" . $subkey, $this->form->getInput($key . "_" . $subkey));
                     }
                 }
@@ -207,9 +196,7 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
             }
 
             $ilCtrl->redirect($this, "configure");
-        }
-        else
-        {
+        } else {
             $this->form->setValuesByPost();
             $tpl->setContent($this->form->getHtml());
         }
