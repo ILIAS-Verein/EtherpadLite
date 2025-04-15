@@ -51,4 +51,14 @@ class ilEtherpadLitePlugin extends ilRepositoryObjectPlugin
     }
     // fau.
 
+    /**
+     * Get the title icon
+     * Used for object list, creation, gui
+     * used by info, export and permission tabe
+     */
+    public static function _getIcon(string $a_type): string
+    {
+        return 'Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/templates/images/icon_xpdl.svg';
+    }
+
 }

@@ -61,7 +61,6 @@ class ilObjEtherpadLite extends ilObjectPlugin
     */
     public function __construct($a_ref_id = 0)
     {
-        include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/classes/class.ilEtherpadLiteConfig.php");
         $this->adminSettings = new ilEtherpadLiteConfig();
         parent::__construct($a_ref_id);
     }
