@@ -3,8 +3,7 @@
 /**
  * EtherpadLite configuration user interface class
  *
- * @author  Alex Killing <alex.killing@gmx.de>
- * @author  Timon Amstutz <timon.amstutz@ilub.unibe.ch>
+ * @author  Fabian Wolf <wolf@ilias.de>
  * @author	Jan Rocho <jan.rocho@fh-dortmund.de>
  * @version $Id$
  *
@@ -13,191 +12,226 @@
  */
 class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
 {
-    private ilEtherpadLiteConfig $object;
-    private ilPropertyFormGUI $form;
+    private \ILIAS\UI\Factory $ui_factory;
+    private ilLanguage $lng;
+    private ilEtherpadLiteConfig $config;
+    private \ILIAS\UI\Renderer $renderer;
+    private ilHelpGUI $help;
+    private ilCtrlInterface $ctrl;
+    private \Psr\Http\Message\ServerRequestInterface $request;
+    private ilGlobalTemplateInterface $tpl;
 
-    /**
-     * @var array
-     */
-    protected $fields = array(
-        "host"                      => array("type"=>"ilTextInputGUI","info"=>"info_host","options"=>null,"subelements"=>null),
-        "port"                      => array("type"=>"ilTextInputGUI","info"=>"info_port","options"=>null,"subelements"=>null),
-        "apikey"                    => array("type"=>"ilTextInputGUI","info"=>"info_apikey","options"=>null,"subelements"=>null),
-        "domain"                    => array("type"=>"ilTextInputGUI","info"=>"info_domain","options"=>null,"subelements"=>null),
-        "https"                     => array("type"=>"ilCheckboxInputGUI","info"=>"info_https","options"=>null,"subelements"=>array(
-                    "validate_curl"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_validate_curl","options"=>null))
-        ),
-        "epadl_version"				=> array("type"=>"ilSelectInputGUI","info"=>"info_epadl_version","options"=>array(
-                    "130" => "<= v1.3.0",
-                    "140" => ">= v1.4.0"
-        ),"subelements"=>null),
-        "path"                  	=> array("type"=>"ilTextInputGUI","info"=>"info_path","options"=>null,"subelements"=>null),
-        "defaulttext"               => array("type"=>"ilTextAreaInputGUI","info"=>"info_defaulttext","options"=>null,"subelements"=>null),
-        "old_group"       	        => array("type"=>"ilTextInputGUI","info"=>"info_old_group","options"=>null,"subelements"=>null),
+    public function __construct()
+    {
+        global $DIC;
 
-        "default_show_chat"         => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_chat","options"=>null,"subelements"=>null),
-        "conf_show_chat"            => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_chat","options"=>null,"subelements"=>null),
+        $this->ui_factory = $DIC->ui()->factory();
+        $this->renderer = $DIC->ui()->renderer();
+        $this->tpl = $DIC->ui()->mainTemplate();
+        $this->lng = $DIC->language();
+        $this->config = new ilEtherpadLiteConfig();
+        $this->help = $DIC->help();
+        $this->request = $DIC->http()->request();
+        $this->ctrl = $DIC->ctrl();
+    }
 
-        "default_line_numbers"      => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_line_numbers","options"=>null,"subelements"=>null),
-        "conf_line_numbers"         => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_line_numbers","options"=>null,"subelements"=>null),
-
-        "default_monospace_font"    => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_monospace_font","options"=>null,"subelements"=>null),
-        "conf_monospace_font"       => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_monospace_font","options"=>null,"subelements"=>null),
-
-        "default_show_colors"       => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_colors","options"=>null,"subelements"=>null),
-        "conf_show_colors"          => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_colors","options"=>null,"subelements"=>null),
-        
-        "allow_read_only"      => array("type"=>"ilCheckboxInputGUI","info"=>"info_allow_read_only","options"=>null,"subelements"=>array(
-                    "readonly_disable_export"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_readonly_disable_export","options"=>null)
-            ),
-        ),
-        "default_show_controls"     => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_controls","options"=>null,"subelements"=>array(
-                    "default_show_style"        => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_style","options"=>null),
-                    "default_show_list"         => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_list","options"=>null),
-                    "default_show_redo"         => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_redo","options"=>null),
-                    "default_show_coloring"     => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_coloring","options"=>null),
-                    "default_show_heading"      => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_heading","options"=>null),
-                    "default_show_imp_exp"      => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_imp_exp","options"=>null),
-                    "default_show_timeline"     => array("type"=>"ilCheckboxInputGUI","info"=>"info_default_show_timeline","options"=>null),
-            ),
-        ),
-
-        "conf_show_controls"        => array("type"=>"ilCheckboxInputGUI","info"=>"conf_show_controls","options"=>null,"subelements"=>array(
-                "conf_show_style"               => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_style","options"=>null),
-                "conf_show_list"                => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_list","options"=>null),
-                "conf_show_redo"                => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_redo","options"=>null),
-                "conf_show_coloring"            => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_coloring","options"=>null),
-                "conf_show_heading"             => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_heading","options"=>null),
-                "conf_show_import_export"       => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_import_export","options"=>null),
-                "conf_show_timeline"            => array("type"=>"ilCheckboxInputGUI","info"=>"info_conf_show_timeline","options"=>null),
-            ),
-        ),
-    );
-
-    /**
-     * Handles all commmands, default is "configure"
-     */
     public function performCommand(string $cmd): void
     {
-        switch($cmd) {
+        $this->help->setScreenIdComponent($this->getPluginObject()->getId());
+        $this->help->setScreenId("adm");
+
+        switch ($cmd) {
             case "configure":
             case "save":
                 $this->$cmd();
                 break;
-
         }
     }
 
-    /**
-     * Configure screen
-     */
     public function configure()
     {
-        global $DIC;
-        
-        $tpl = $DIC['tpl'];
-        $DIC->help()->setScreenIdComponent($this->getPluginObject()->getId());
-        $DIC->help()->setScreenId("adm");
-        $this->initConfigurationForm();
-        $this->getValues();
-        $tpl->setContent($this->form->getHTML());
+        $form = $this->buildForm();
+        $this->tpl->setContent($this->renderer->render($form));
     }
 
-
-    public function getValues()
-    {
-        foreach($this->fields as $key => $item) {
-
-            $values[$key] = $this->object->getValue($key);
-            if(is_array($item["subelements"])) {
-                foreach($item["subelements"] as $subkey => $subitem) {
-                    $values[$key . "_" . $subkey] = $this->object->getValue($key . "_" . $subkey);
-                }
-            }
-
-        }
-
-        $this->form->setValuesByArray($values);
-    }
-
-    /**
-     * Init configuration form.
-     *
-     * @return object form object
-     */
-    public function initConfigurationForm()
-    {
-        global $DIC;
-        
-        $lng = $DIC['lng'];
-        $ilCtrl = $DIC['ilCtrl'];
-
-        $this->object = new ilEtherpadLiteConfig();
-
-        $this->form = new ilPropertyFormGUI();
-
-
-        foreach($this->fields as $key => $item) {
-            $field = new $item["type"]($this->plugin_object->txt($key), $key);
-            $field->setInfo($this->plugin_object->txt($item["info"]));
-            if(is_array($item["options"])) {
-                $field->setOptions($item["options"]);
-            }
-            
-            if(is_array($item["subelements"])) {
-                foreach($item["subelements"] as $subkey => $subitem) {
-                    $subfield = new $subitem["type"]($this->plugin_object->txt($key . "_" . $subkey), $key . "_" . $subkey);
-                    $subfield->setInfo($this->plugin_object->txt($subitem["info"]));
-                    $field->addSubItem($subfield);
-                    if(is_array($subitem["options"])) {
-                        $field->setOptions($subitem["options"]);
-                    }
-                }
-            }
-
-            $this->form->addItem($field);
-        }
-
-        $this->form->addCommandButton("save", $lng->txt("save"));
-
-        $this->form->setTitle($this->plugin_object->txt("configuration"));
-        $this->form->setFormAction($ilCtrl->getFormAction($this));
-
-        return $this->form;
-    }
-
-
-    /**
-     * Save form input (currently does not save anything to db)
-     *
-     */
     public function save()
     {
-        global $DIC;
-        
-        $tpl = $DIC['tpl'];
-        $ilCtrl = $DIC['ilCtrl'];
+        $form = $this->buildForm()->withRequest($this->request);
+        $config = $this->config;
 
-        $this->initConfigurationForm();
-        if($this->form->checkInput()) {
+        if ($data = $form->getData()) {
+            $connection = $data["main"]["connection"];
+            $pad = $data["main"]["pad"];
 
-            // Save Checkbox Values
-            foreach($this->fields as $key => $item) {
+            $config->setHost($connection["host"]);
+            $config->setDomain($connection["domain"]);
+            $config->setPort($connection["port"]);
+            $config->setApikey($connection["apikey"]);
+            $config->setHttps($connection["https"] !== null);
 
-                $this->object->setValue($key, $this->form->getInput($key));
-                if(is_array($item["subelements"])) {
-                    foreach($item["subelements"] as $subkey => $subitem) {
-                        $this->object->setValue($key . "_" . $subkey, $this->form->getInput($key . "_" . $subkey));
-                    }
-                }
-
+            if ($connection["https"] !== null) {
+                $config->setValidateCurl($connection["https"]["validate_curl"]);
             }
 
-            $ilCtrl->redirect($this, "configure");
+            $config->setEpadlVersion($connection["epadl_version"]);
+            $config->setPath($connection["path"] ?? "");
+
+            $config->setDefaulttext($pad["defaulttext"]);
+            $config->setAllowReadOnly($pad["allow_read_only"] !== null);
+
+            if ($pad["allow_read_only"] !== null) {
+                $config->setReadonlyDisableExport($pad["allow_read_only"]["readonly_disable_export"]);
+            }
+
+            $config->setDefaultShowChat($pad["default_show_chat"]);
+            $config->setConfShowChat($pad["conf_show_chat"]);
+            $config->setDefaultLineNumbers($pad["default_line_numbers"]);
+            $config->setConfLineNumbers($pad["conf_line_numbers"]);
+            $config->setDefaultMonospaceFont($pad["default_monospace_font"]);
+            $config->setConfMonospaceFont($pad["conf_monospace_font"]);
+            $config->setDefaultShowColors($pad["default_show_colors"]);
+            $config->setConfShowColors($pad["conf_show_colors"]);
+
+            $config->setDefaultShowControls($pad["default_show_controls"] !== null);
+
+            if ($pad["default_show_controls"] !== null) {
+                $default = $pad["default_show_controls"];
+                $config->setDefaultShowStyle($default["default_show_style"]);
+                $config->setDefaultShowList($default["default_show_list"]);
+                $config->setDefaultShowRedo($default["default_show_redo"]);
+                $config->setDefaultShowColoring($default["default_show_coloring"]);
+                $config->setDefaultShowHeading($default["default_show_heading"]);
+                $config->setDefaultShowImpExp($default["default_show_imp_exp"]);
+                $config->setDefaultShowTimeline($default["default_show_timeline"]);
+            }
+
+            $config->setConfShowControls($pad["conf_show_controls"] !== null);
+
+            if ($pad["conf_show_controls"] !== null) {
+                $conf = $pad["conf_show_controls"];
+                $config->setConfShowStyle($conf["conf_show_style"]);
+                $config->setConfShowList($conf["conf_show_list"]);
+                $config->setConfShowRedo($conf["conf_show_redo"]);
+                $config->setConfShowColoring($conf["conf_show_coloring"]);
+                $config->setConfShowHeading($conf["conf_show_heading"]);
+                $config->setConfShowImportExport($conf["conf_show_import_export"]);
+                $config->setConfShowTimeline($conf["conf_show_timeline"]);
+            }
+            $this->tpl->setOnScreenMessage("success", $this->lng->txt("saved_successfully"), true);
+            $this->ctrl->redirect($this, "configure");
         } else {
-            $this->form->setValuesByPost();
-            $tpl->setContent($this->form->getHtml());
+            $this->tpl->setContent($this->renderer->render($form));
         }
     }
 
+    public function buildForm() : \ILIAS\UI\Component\Input\Container\Form\Form
+    {
+        $field = $this->ui_factory->input()->field();
+        $plugin = $this->plugin_object;
+        $config = $this->config;
+
+        $values = [
+            "connection" => [
+                "host" => $config->getHost(),
+                "port" => $config->getPort(),
+                "domain" => $config->getDomain(),
+                "apikey" => $config->getApikey(),
+                "https" => $config->getHttps() ? ["validate_curl" => $config->getValidateCurl()] : null,
+                "epadl_version" => $config->getEpadlVersion(),
+                "path" => $config->getPath(),
+            ],
+            "pad" => [
+                "defaulttext" => $config->getDefaulttext(),
+                "allow_read_only" => $config->getAllowReadOnly() ? [
+                    "readonly_disable_export" => $config->getReadonlyDisableExport()
+                ] : null,
+                "default_show_chat" => $config->getDefaultShowChat(),
+                "conf_show_chat" => $config->getConfShowChat(),
+                "default_line_numbers" => $config->getDefaultLineNumbers(),
+                "conf_line_numbers" => $config->getConfLineNumbers(),
+                "default_monospace_font" => $config->getDefaultMonospaceFont(),
+                "conf_monospace_font" => $config->getConfMonospaceFont(),
+                "default_show_colors" => $config->getDefaultShowColors(),
+                "conf_show_colors" => $config->getConfShowColors(),
+                "default_show_controls" => $config->getDefaultShowControls() ? [
+                    "default_show_style" => $config->getDefaultShowStyle(),
+                    "default_show_list" => $config->getDefaultShowList(),
+                    "default_show_redo" => $config->getDefaultShowRedo(),
+                    "default_show_coloring" => $config->getDefaultShowColoring(),
+                    "default_show_heading" => $config->getDefaultShowHeading(),
+                    "default_show_imp_exp" => $config->getDefaultShowImpExp(),
+                    "default_show_timeline" => $config->getDefaultShowTimeline()
+                    ] : null,
+                "conf_show_controls" => $config->getConfShowControls() ? [
+                    "conf_show_style" =>$config->getConfShowStyle(),
+                    "conf_show_list" => $config->getConfShowList(),
+                    "conf_show_redo" => $config->getConfShowRedo(),
+                    "conf_show_coloring" => $config->getConfShowColoring(),
+                    "conf_show_heading" => $config->getConfShowHeading(),
+                    "conf_show_import_export" => $config->getConfShowImportExport(),
+                    "conf_show_timeline" => $config->getConfShowTimeline(),
+                ] : null,
+            ]
+        ];
+
+        $connection_section = $field->section([
+            "host" => $field->text($plugin->txt("host"), $plugin->txt("info_host"))->withRequired(true),
+            "domain" => $field->text($plugin->txt("domain"), $plugin->txt("info_domain"))->withRequired(true),
+            "port" => $field->numeric($plugin->txt("port"), $plugin->txt("info_port"))->withRequired(true),
+            "apikey" => $field->text($plugin->txt("apikey"), $plugin->txt("info_apikey"))->withRequired(true),
+            "https" => $field->optionalGroup([
+                "validate_curl" => $field->checkbox($plugin->txt("https_validate_curl"), $plugin->txt("info_validate_curl")),
+            ], $plugin->txt("https"), $plugin->txt("info_https")),
+            "epadl_version" => $field->select($plugin->txt("epadl_version"), [
+                "130" => "<= v1.3.0",
+                "140" => ">= v1.4.0"
+            ], $plugin->txt("info_epadl_version"))->withRequired(true),
+            "path" => $field->text($plugin->txt("path"), $plugin->txt("info_path")),
+        ], $plugin->txt("connection_settings"));
+
+        $pad_section =  $field->section([
+            "defaulttext" => $field->textarea($plugin->txt("defaulttext"), $plugin->txt("info_defaulttext")),
+            "allow_read_only" => $field->optionalGroup([
+                "readonly_disable_export" => $field->checkbox($plugin->txt("allow_read_only_readonly_disable_export"), $plugin->txt("info_readonly_disable_export"))
+            ], $plugin->txt("allow_read_only"), $plugin->txt("info_allow_read_only")),
+            "default_show_chat" => $field->checkbox($plugin->txt("default_show_chat"), $plugin->txt("info_default_show_chat")),
+            "conf_show_chat" => $field->checkbox($plugin->txt("conf_show_chat"), $plugin->txt("info_conf_show_chat")),
+            "default_line_numbers" => $field->checkbox($plugin->txt("default_line_numbers"), $plugin->txt("info_default_line_numbers")),
+            "conf_line_numbers" => $field->checkbox($plugin->txt("conf_line_numbers"), $plugin->txt("info_conf_line_numbers")),
+            "default_monospace_font" => $field->checkbox($plugin->txt("default_monospace_font"), $plugin->txt("info_default_monospace_font")),
+            "conf_monospace_font" => $field->checkbox($plugin->txt("conf_monospace_font"), $plugin->txt("info_conf_monospace_font")),
+            "default_show_colors" => $field->checkbox($plugin->txt("default_show_colors"), $plugin->txt("info_default_show_colors")),
+            "conf_show_colors" => $field->checkbox($plugin->txt("conf_show_colors"), $plugin->txt("info_conf_show_colors")),
+            "default_show_controls" => $field->optionalGroup([
+                "default_show_style" => $field->checkbox($plugin->txt("default_show_controls_default_show_style"), $plugin->txt("info_default_show_style")),
+                "default_show_list" => $field->checkbox($plugin->txt("default_show_controls_default_show_list"), $plugin->txt("info_default_show_list")),
+                "default_show_redo" => $field->checkbox($plugin->txt("default_show_controls_default_show_redo"), $plugin->txt("info_default_show_redo")),
+                "default_show_coloring" => $field->checkbox($plugin->txt("default_show_controls_default_show_coloring"), $plugin->txt("info_default_show_coloring")),
+                "default_show_heading" => $field->checkbox($plugin->txt("default_show_controls_default_show_heading"), $plugin->txt("info_default_show_heading")),
+                "default_show_imp_exp" => $field->checkbox($plugin->txt("default_show_controls_default_show_imp_exp"), $plugin->txt("info_default_show_imp_exp")),
+                "default_show_timeline" => $field->checkbox($plugin->txt("default_show_controls_default_show_timeline"), $plugin->txt("info_default_show_timeline")),
+            ], $plugin->txt("default_show_controls"), $plugin->txt("info_default_show_controls")),
+            "conf_show_controls" => $field->optionalGroup([
+                "conf_show_style" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_style"), $plugin->txt("info_conf_show_style")),
+                "conf_show_list" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_list"), $plugin->txt("info_conf_show_list")),
+                "conf_show_redo" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_redo"), $plugin->txt("info_conf_show_redo")),
+                "conf_show_coloring" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_coloring"), $plugin->txt("info_conf_show_coloring")),
+                "conf_show_heading" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_heading"), $plugin->txt("info_conf_show_heading")),
+                "conf_show_import_export" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_import_export"), $plugin->txt("info_conf_show_import_export")),
+                "conf_show_timeline" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_timeline"), $plugin->txt("info_conf_show_timeline")),
+            ], $plugin->txt("conf_show_controls"), $plugin->txt("conf_show_controls")),
+        ], $plugin->txt("pad_settings"));
+
+
+        $main_section = $field->section([
+            "connection" => $connection_section,
+            "pad" => $pad_section,
+        ], $plugin->txt("configuration"))
+                              ->withValue($values);
+
+        return $this->ui_factory->input()->container()->form()->standard(
+            $this->ctrl->getFormAction($this, "save"),
+            ["main" => $main_section]
+        );
+    }
 }
