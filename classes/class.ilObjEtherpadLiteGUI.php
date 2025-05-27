@@ -38,13 +38,15 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 {
     private ilEtherpadLiteConfig $adminSettings;
     private ilPropertyFormGUI $form;
+    private ilHelpGUI $help;
 
     /**
      * Initialisation
      */
     protected function afterConstructor(): void
     {
-
+        global $DIC;
+        $this->help = $DIC->help();
     }
 
     /**
@@ -99,23 +101,18 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
      */
     protected function setTabs(): void
     {
-        global $DIC;
-        
-        $ilTabs = $DIC['ilTabs'];
-        $ilCtrl = $DIC['ilCtrl'];
-        $ilAccess = $DIC['ilAccess'];
-        $DIC->help()->setScreenIdComponent($this->getPlugin()->getId());
+        $this->help->setScreenIdComponent($this->getPlugin()->getId());
         // tab for the "show content" command
-        if ($ilAccess->checkAccess("read", "", $this->object->getRefId())) {
-            $ilTabs->addTab("content", $this->txt("content"), $ilCtrl->getLinkTarget($this, "showContent"));
+        if ($this->access->checkAccess("read", "", $this->object->getRefId())) {
+            $this->tabs->addTab("content", $this->txt("content"), $this->ctrl->getLinkTarget($this, "showContent"));
         }
 
         // standard info screen tab
         $this->addInfoTab();
 
         // a "properties" tab
-        if ($ilAccess->checkAccess("write", "", $this->object->getRefId())) {
-            $ilTabs->addTab("properties", $this->txt("properties"), $ilCtrl->getLinkTarget($this, "editProperties"));
+        if ($this->access->checkAccess("write", "", $this->object->getRefId())) {
+            $this->tabs->addTab("properties", $this->txt("properties"), $this->ctrl->getLinkTarget($this, "editProperties"));
         }
 
         // standard epermission tab
@@ -132,16 +129,11 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
      */
     public function editProperties()
     {
-        global $DIC;
-        
-        $tpl = $DIC['tpl'];
-        $ilTabs = $DIC['ilTabs'];
-
-        $ilTabs->activateTab("properties");
-        $DIC->help()->setScreenId("properties");
+        $this->tabs->activateTab("properties");
+        $this->help->setScreenId("properties");
         $this->initPropertiesForm();
         $this->getPropertiesValues();
-        $tpl->setContent($this->form->getHTML());
+        $this->tpl->setContent($this->form->getHTML());
     }
 
     /**
@@ -151,11 +143,6 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
      */
     public function initPropertiesForm()
     {
-
-        global $DIC;
-        
-        $ilCtrl = $DIC['ilCtrl'];
-
         $this->form = new ilPropertyFormGUI();
 
         // hidden Inputfield for ID
@@ -283,7 +270,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         $this->form->addCommandButton("updateProperties", $this->txt("save"));
 
         $this->form->setTitle($this->txt("edit_properties"));
-        $this->form->setFormAction($ilCtrl->getFormAction($this));
+        $this->form->setFormAction($this->ctrl->getFormAction($this));
     }
 
     /**
@@ -317,12 +304,6 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
      */
     public function updateProperties()
     {
-        global $DIC;
-        
-        $tpl = $DIC['tpl'];
-        $lng = $DIC['lng'];
-        $ilCtrl = $DIC['ilCtrl'];
-
         $this->initPropertiesForm();
         if ($this->form->checkInput()) {
             $this->object->setTitle($this->form->getInput("title"));
@@ -345,11 +326,11 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
             $this->object->update();
             $this->tpl->setOnScreenMessage("success", $this->lng->txt("msg_obj_modified"), true);
-            $ilCtrl->redirect($this, "editProperties");
+            $this->ctrl->redirect($this, "editProperties");
         }
 
         $this->form->setValuesByPost();
-        $tpl->setContent($this->form->getHtml());
+        $this->tpl->setContent($this->form->getHtml());
     }
 
     /**
@@ -357,21 +338,14 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
      */
     public function showContent()
     {
-        global $DIC;
-
-        /** @var ilGlobalTemplateInterface $tpl */
-        $tpl = $DIC['tpl'];
-        $ilTabs = $DIC['ilTabs'];
-        $ilUser = $DIC['ilUser'];
-        $lng = $DIC['lng'];
+        $this->tabs->activateTab("content");
+        $this->help->setScreenId("etherpad");
         
         try {
-
             $this->object->init();
-            $ilTabs->activateTab("content");
-            $DIC->help()->setScreenId("etherpad");
-            $tpl->addCss("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/templates/css/etherpad.css");
-            $tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/js/ilEtherpadLite.js");
+
+            $this->tpl->addCss("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/templates/css/etherpad.css");
+            $this->tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/js/ilEtherpadLite.js");
 
             // Show Elements depending on settings in the administration of the plugin
             $this->adminSettings = new ilEtherpadLiteConfig();
@@ -398,7 +372,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
             $pad->setVariable("PORT", ($this->adminSettings->getValue("port")));
             $pad->setVariable("PATH", ($this->adminSettings->getValue("path")));
             $pad->setVariable("ETHERPADLITE_ID", $padID);
-            $pad->setVariable("USER_NAME", rawurlencode($ilUser->firstname . ' ' . $ilUser->lastname));
+            $pad->setVariable("USER_NAME", rawurlencode($this->user->firstname . ' ' . $this->user->lastname));
             $pad->setVariable("SHOW_CONTROLS", ($this->object->getShowControls() ? "true" : "false"));
             $pad->setVariable("SHOW_CHAT", ($this->object->getShowChat() ? "true" : "false"));
             $pad->setVariable("SHOW_LINE_NUMBERS", ($this->object->getLineNumbers() ? "true" : "false"));
@@ -412,18 +386,16 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
             $pad->setVariable("SHOW_IMPORT_EXPORT_BLOCK", ($this->object->getShowImportExport()? "true" : "false"));
             $pad->setVariable("SHOW_TIMELINE_BLOCK", ($this->object->getShowTimeline()? "true" : "false"));
-            $pad->setVariable("LANGUAGE", $lng->getUserLanguage());
+            $pad->setVariable("LANGUAGE", $this->lng->getUserLanguage());
             $pad->setVariable("EPADL_VERSION", ($this->adminSettings->getValue("epadl_version")));
-            $tpl->setContent($pad->get());
+            $this->tpl->setContent($pad->get());
 
 
             // Add Permalink
-            $tpl->setPermanentLink('xpdl', $this->ref_id);
+            $this->tpl->setPermanentLink('xpdl', $this->ref_id);
             
         } catch (\Firebase\JWT\ExpiredException $e) {
-            $ilTabs->activateTab("content");
-            $DIC->help()->setScreenId("etherpad");
-            $tpl->setContent($this->txt("load_error")." ".$e->getMessage());
+            $this->tpl->setContent($this->txt("load_error")." ".$e->getMessage());
         }
 
 
