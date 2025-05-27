@@ -92,10 +92,6 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         return "showContent";
     }
 
-    //
-    // DISPLAY TABS
-    //
-
     /**
      * Set tabs
      */
@@ -112,17 +108,16 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
         // a "properties" tab
         if ($this->access->checkAccess("write", "", $this->object->getRefId())) {
-            $this->tabs->addTab("properties", $this->txt("properties"), $this->ctrl->getLinkTarget($this, "editProperties"));
+            $this->tabs->addTab(
+                "properties",
+                $this->txt("properties"),
+                $this->ctrl->getLinkTarget($this, "editProperties")
+            );
         }
 
         // standard epermission tab
         $this->addPermissionTab();
     }
-
-
-    //
-    // Edit properties form
-    //
 
     /**
      * Edit Properties. This commands uses the form class to display an input form.
@@ -165,14 +160,14 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         // Show Elements depending on settings in the administration of the plugin
         $this->adminSettings = new ilEtherpadLiteConfig();
 
-        if($this->adminSettings->getValue("allow_read_only")) {
+        if ($this->adminSettings->getValue("allow_read_only")) {
             $ro = new ilCheckboxInputGUI($this->txt("read_only"), "read_only");
             $this->form->addItem($ro);
         }
 
 
         // show Chat
-        if($this->adminSettings->getValue("conf_show_chat")) {
+        if ($this->adminSettings->getValue("conf_show_chat")) {
 
             $chat = new ilCheckboxInputGUI($this->txt("show_chat"), "show_chat");
             //$chat->setInfo($this->txt("info_show_chat"));
@@ -180,14 +175,14 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
         }
 
         // show line number
-        if($this->adminSettings->getValue("conf_line_numbers")) {
+        if ($this->adminSettings->getValue("conf_line_numbers")) {
             $line = new ilCheckboxInputGUI($this->txt("show_line_numbers"), "show_line_numbers");
             //$line->setInfo($this->txt("info_show_line_numbers"));
             $this->form->addItem($line);
         }
 
         // monospace font
-        if($this->adminSettings->getValue("conf_monospace_font")) {
+        if ($this->adminSettings->getValue("conf_monospace_font")) {
             $font = new ilCheckboxInputGUI($this->txt("monospace_font"), "monospace_font");
             $font->setInfo($this->txt("info_monospace_font"));
             $this->form->addItem($font);
@@ -195,7 +190,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
         // show colors
-        if($this->adminSettings->getValue("conf_show_colors")) {
+        if ($this->adminSettings->getValue("conf_show_colors")) {
             $colors = new ilCheckboxInputGUI($this->txt("show_colors"), "show_colors");
             //$colors->setInfo($this->txt("info_show_colors"));
             $this->form->addItem($colors);
@@ -203,14 +198,14 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
         // show controls
-        if($this->adminSettings->getValue("conf_show_controls")) {
+        if ($this->adminSettings->getValue("conf_show_controls")) {
             $controls = new ilCheckboxInputGUI($this->txt("show_controls"), "show_controls");
             //$controls->setInfo($this->txt("info_show_controls"));
 
 
 
             // show style
-            if($this->adminSettings->getValue("conf_show_controls_conf_show_style")) {
+            if ($this->adminSettings->getValue("conf_show_controls_conf_show_style")) {
                 $style = new ilCheckboxInputGUI($this->txt("show_style"), "show_style");
                 $style->setInfo($this->txt("info_show_style"));
                 $controls->addSubItem($style);
@@ -218,7 +213,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
             // show list
-            if($this->adminSettings->getValue("conf_show_controls_conf_show_list")) {
+            if ($this->adminSettings->getValue("conf_show_controls_conf_show_list")) {
                 $list = new ilCheckboxInputGUI($this->txt("show_list"), "show_list");
                 $list->setInfo($this->txt("info_show_list"));
                 $controls->addSubItem($list);
@@ -226,7 +221,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
             // show redo
-            if($this->adminSettings->getValue("conf_show_controls_conf_show_redo")) {
+            if ($this->adminSettings->getValue("conf_show_controls_conf_show_redo")) {
                 $redo = new ilCheckboxInputGUI($this->txt("show_redo"), "show_redo");
                 //$redo->setInfo($this->txt("info_show_redo"));
                 $controls->addSubItem($redo);
@@ -234,7 +229,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
             // show coloring
-            if($this->adminSettings->getValue("conf_show_controls_conf_show_coloring")) {
+            if ($this->adminSettings->getValue("conf_show_controls_conf_show_coloring")) {
                 $coloring = new ilCheckboxInputGUI($this->txt("show_coloring"), "show_coloring");
                 $coloring->setInfo($this->txt("info_show_coloring"));
                 $controls->addSubItem($coloring);
@@ -242,7 +237,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
             // show heading
-            if($this->adminSettings->getValue("conf_show_controls_conf_show_heading")) {
+            if ($this->adminSettings->getValue("conf_show_controls_conf_show_heading")) {
                 $heading = new ilCheckboxInputGUI($this->txt("show_heading"), "show_heading");
                 $heading->setInfo($this->txt("info_show_heading"));
                 $controls->addSubItem($heading);
@@ -250,7 +245,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
             // show import/export
-            if($this->adminSettings->getValue("conf_show_controls_conf_show_import_export")) {
+            if ($this->adminSettings->getValue("conf_show_controls_conf_show_import_export")) {
                 $import = new ilCheckboxInputGUI($this->txt("show_import_export"), "show_import_export");
                 $import->setInfo($this->txt("info_show_import_export"));
                 $controls->addSubItem($import);
@@ -258,7 +253,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
 
 
             // show timeline
-            if($this->adminSettings->getValue("conf_show_controls_conf_show_timeline")) {
+            if ($this->adminSettings->getValue("conf_show_controls_conf_show_timeline")) {
                 $timeline = new ilCheckboxInputGUI($this->txt("show_timeline"), "show_timeline");
                 $timeline->setInfo($this->txt("info_show_timeline"));
                 $controls->addSubItem($timeline);
@@ -350,11 +345,11 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
             // Show Elements depending on settings in the administration of the plugin
             $this->adminSettings = new ilEtherpadLiteConfig();
 
-            if($this->object->getReadOnly()) {
+            if ($this->object->getReadOnly()) {
                 $padID = $this->object->getReadOnlyID();
                 $this->tpl->setOnScreenMessage("info", $this->txt("read_only_notice"), true);
                 
-                if($this->adminSettings->getValue("allow_read_only_readonly_disable_export")) {
+                if ($this->adminSettings->getValue("allow_read_only_readonly_disable_export")) {
                     $this->object->setShowImportExport(false);
                 }
             } else {
