@@ -43,7 +43,7 @@ allow_read_only_readonly_disable_export#:#Bei Etherpads mit Schreibschutz Export
 info_readonly_disable_export#:#Workaround für einen Etherpad-Lite-Bug, der beim Exportieren schreibgeschützter Pads eine Fehlermeldung anzeigt.
 
 epadl_version#:#Etherpad-Lite-Version
-info_epadl_version#:#Die verwendete EtherpadLite-Version auf dem Server
+info_epadl_version#:#Die verwendete Etherpad-Lite-Version auf dem Server
 
 show_chat#:#Chat anzeigen
 info_show_chat#:#
