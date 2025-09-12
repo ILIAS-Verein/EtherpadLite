@@ -23,8 +23,8 @@ root_create_xpdl#:#Create Etherpad
 cat_create_xpdl#:#Create Etherpad
 rbac_create_xpdl#:#Create Etherpad
 content#:#Etherpad
-properties#:#Properties
-edit_properties#:#Edit Properties
+properties#:#Settings
+edit_properties#:#Edit Settings
 title#:#Title
 description#:#Description
 save#:#Save
@@ -33,13 +33,14 @@ edit#:#Edit
 status#:#Status
 offline#:#Offline
 xpdl_import#:#Import Etherpad
-load_error#:#An error occured while loading the etherpad. Message:
-error_not_found_in_db#:#This pad can not be found in the database.
-read_only#:#Revoke write permission
-read_only_notice#:#This Etherpad is write protected.
-allow_read_only#:#Activate write protection for Etherpads
-info_allow_read_only#:#Allow an Etherpad to be set to read only mode in the settings.
-allow_read_only_readonly_disable_export#:#Disable export of Etherpads when they are set to read-only.
+load_error#:#An error occurred while loading the Etherpad. Message:
+error_not_found_in_db#:#This pad cannot be found in the database.
+read_only#:#Set to Read-Only Mode
+
+read_only_notice#:#This Etherpad is in read-only mode.
+allow_read_only#:#Allow Read-Only Mode
+info_allow_read_only#:#Allow individual Etherpads to be set to read-only mode in their settings.
+allow_read_only_readonly_disable_export#:#Disable Export of Read-Only Etherpads
 info_readonly_disable_export#:#Workaround for an Etherpad Lite bug, which displays an error when trying to export read-only pads.
 epadl_version#:#Etherpad Lite Version
 info_epadl_version#:#Please select which Etherpad Lite server version you are using on the server.
@@ -48,26 +49,26 @@ show_chat#:#Show Chat
 info_show_chat#:#
 show_line_numbers#:#Show Line Numbers
 info_show_line_numbers#:#
-monospace_font#:#Activate Monospace Font
-info_monospace_font#:#Monospace font gives all letters the same width.
-show_colors#:#Show Coloring of Authors
+monospace_font#:#Use Monospace Font
+info_monospace_font#:#Give all letters the same width by making the font monospace.
+show_colors#:#Show Authorship Highlight Colours
 info_show_colors#:#
 show_controls#:#Show Controls
 info_show_controls#:#
-show_style#:#Show Style Controls
-info_show_style#:#With style controls text can be underlined etc.
-show_list#:#Show List Controls
-info_show_list#:#With list controls ordered and unordered lists can be created.
-show_redo#:#Show Undo/Redo Controls
+show_style#:#Style Controls
+info_show_style#:#Show controls for formatting text, e.g. underlining, etc.
+show_list#:#List Controls
+info_show_list#:#Show list controls, with which ordered and unordered lists can be created.
+show_redo#:#Undo/Redo Controls
 info_show_redo#:#
-show_coloring#:#Show Coloring Controls
-info_show_coloring#:#With coloring controls the coloring of the author of the text can be deleted.
-show_heading#:#Show Heading Controls
-info_show_heading#:#With heading controls headings for paragraphs can be created.
-show_import_export#:#Show Import/Export Controls
-info_show_import_export#:#Use with care: Import and Export may not work as expected. Text may also be moved with the ctrl+c/cmd+c command.
-show_timeline#:#Show Timeline
-info_show_timeline#:#With the timeline the chronological sequence of the Etherpad can be shown.
+show_coloring#:#Authorship Highlight Colour Controls
+info_show_coloring#:#Show authorship highlight colour control element, with which authorship highlighting can be deleted.
+show_heading#:#Heading Controls
+info_show_heading#:#Show heading controls. With these, headings for paragraphs can be created.
+show_import_export#:#Import/Export Controls
+info_show_import_export#:#Show controls for import/export from/to different file formats. Use with care: Import and Export may not work as expected. Text may also be moved with the ctrl+c/cmd+c command.
+show_timeline#:#Timeline Controls
+info_show_timeline#:#Show timeline control element, via which the chronological version history of the Etherpad can be accessed.
 enter_fullscreen#:#Activate Fullscreen
 leave_fullscreen#:#Deactivate Fullscreen
 
@@ -75,84 +76,84 @@ leave_fullscreen#:#Deactivate Fullscreen
 <!-- Administration -->
 configuration#:#Etherpad-Lite Configuration
 host#:#Host
-info_host#:#Hostname of server on which Etherpad-Lite was installed. Example: etherpad.example.com (Attention, due too cookie restrictions the Etherpad-Lite server and ILIAS need to be located with the same domain or subdomain)
+info_host#:#Hostname of server on which Etherpad-Lite has been installed. Example: etherpad.example.com - Please note: due to cookie restrictions, the Etherpad-Lite server and ILIAS need to be located within the same domain or subdomain.
 port#:#Port
 info_port#:#Port on which Etherpad-Lite is listening. Standard: 9001
 apikey#:#Apikey
 info_apikey#:#The Apikey is automatically generated when Etherpad-Lite is started for the first time. The key can be found in the main directory of Etherpad-Lite in the file APIKEY.txt.
 domain#:#Domain
-info_domain#:#Domain of Etherpad-Lite. The domain is important to secure the validity of the session-cookies. Example: .example.com (Attention the leading point is important to secure the validity of the session-cookies)
+info_domain#:#Domain on which the Etherpad-Lite is located. The domain is necessary to ensure the validity of the session-cookies. Example: .example.com -  Please note: the full stop at the start of the domain is required.
 path#:#Path
 info_path#:#Path when Etherpad-Lite is located in a non-standard sub-directory of the webserver, e.g. /p/padname -> /subdirectory/p/padname then enter "/subdirectory" here. Otherwise leave blank (default).
 https#:#Https
-info_https#:#Enable or disable HTTPS.
-https_validate_curl#:#Valid SSL Cert
-validate_curl#:#Valid SSL Cert
+info_https#:#Enable HTTPS.
+https_validate_curl#:#Validate SSL Certificate
+validate_curl#:#Validate SSL Certificate
 info_validate_curl#:#Check for valid SSL certificate at peer.
-defaulttext#:#Standardtext
-info_defaulttext#:#This text will be displayed when a new etherpad is created.
-info_old_group#:#Group (deprecated since 1.0.0), keep this value for old installations.
+defaulttext#:#Standard Text
+info_defaulttext#:#Prefill the text input field of new Etherpads with this text.
+info_old_group#:#Group (deprecated since 1.0.0) - keep this value for old installations.
 old_group#:#Group
 
-default_show_chat#:#Show chat by default
-info_default_show_chat#:#Enable or disable the chat function for all Etherpad objects by default
-conf_show_chat#:#Allow individual chat configuration
-info_conf_show_chat#:#If activated it is possible to enable or disable the chat function for each individual Etherpad.
+default_show_chat#:#Show Chat
+info_default_show_chat#:#Enable chat function for all Etherpads by default.
+conf_show_chat#:#Chat Toggleable
+info_conf_show_chat#:#Make it possible to enable or disable the chat function for each Etherpad individually.
 
-default_line_numbers#:#Show line numbers by default
-info_default_line_numbers#:#Enable or disable line numbers for all Etherpad objects by default
-conf_line_numbers#:#Allow individual line number configuration
-info_conf_line_numbers#:#If activated it is possible to enable or disable the display of line numbers for each individual Etherpad.
+default_line_numbers#:#Show Line Numbers
+info_default_line_numbers#:#Display line numbers in all Etherpads by default.
+conf_line_numbers#:#Line Numbers Toggleable
+info_conf_line_numbers#:#Make it possible to enable or disable the display of line numbers in each Etherpad individually.
 
-default_monospace_font#:#Enable monospaced fonts by default
-info_default_monospace_font#:#Enable or disable the monospace font (all letters have the same width) for all Etherpad objects by default.
-conf_monospace_font#:#Allow individual monospace font configuration
-info_conf_monospace_font#:#If activated it is possible to enable or disable the display of monospaced fonts for each individual Etherpad.
+default_monospace_font#:#Default Monospace Font
+info_default_monospace_font#:#Make the font in all Etherpads monospace (all letters have the same width) by default.
+conf_monospace_font#:#Monospace Font Toggleable
+info_conf_monospace_font#:#Make it possible to enable or disable the display of monospaced fonts for each Etherpad individually.
 
-default_show_colors#:#Show author colors by default
-info_default_show_colors#:#Enable or disable the author colors for all Etherpad objects by default.
-conf_show_colors#:#Allow individual author color configuration
-info_conf_show_colors#:#When activated it is possible to enable or disable the display of author colors for each individual Etherpad.
+default_show_colors#:#Show Authorship Highlight Colours
+info_default_show_colors#:#Turn on authorship highlight colours for all Etherpads by default.
+conf_show_colors#:#Authorship Highlight Colour Toggleable
+info_conf_show_colors#:#Make it possible to enable or disable the display of authorship highlight colours in each Etherpad individually.
 
-default_show_controls#:#Show control bar by default
-info_default_show_controls#:#Enable or disable the control bar for all Etherpad objects by default.
-conf_show_controls#:#Allow individual control bar configuration
-info_conf_show_controls#:#When activated it is possible to enable or disable the control bar for each individual Etherpad.
+default_show_controls#:#Show Control Bar
+info_default_show_controls#:#Display the control bar in all Etherpads by default.
+conf_show_controls#:#Control Bar Toggleable
+info_conf_show_controls#:#Allow the control bar to be enabled or disabled in each Etherpad individually.
 
-default_show_controls_default_show_style#:#Show font styling elements by default
-info_default_show_style#:#Enable or disable the font styling for all Etherpad objects by default.
-conf_show_controls_conf_show_style#:#Allow individual display of font styling elements
-info_conf_show_style#:#When activated it is possible to enable or disable the display of font styling elements for each individual Etherpad.
+default_show_controls_default_show_style#:#Font Styling Controls
+info_default_show_style#:#Show the font styling controls (bold, italic, underline & strike through) in all Etherpads by default.
+conf_show_controls_conf_show_style#:#Font Styling Controls Toggleable
+info_conf_show_style#:#Make it possible to enable or disable the display of font styling controls in each Etherpad individually.
 
-default_show_controls_default_show_list#:#Show list elements by default
-info_default_show_list#:#Enable or disable the list elements for all Etherpad objects by default.
-conf_show_controls_conf_show_list#:#Allow individual display of list elements
-info_conf_show_list#:#When activated it is possible to enable or disable the display of list elements for each individual Etherpad.
+default_show_controls_default_show_list#:#List Controls
+info_default_show_list#:#Show list controls (ordered list, unordered list, indent, outdent) in all Etherpads by default.
+conf_show_controls_conf_show_list#:#List Controls Toggleable
+info_conf_show_list#:#Make it possible to enable or disable the display of list controls in each Etherpad individually.
 
-default_show_controls_default_show_redo#:#Show undo and redo buttons by default
-info_default_show_redo#:#Enable or disable the undo and redo buttons for all Etherpad objects by default.
-conf_show_controls_conf_show_redo#:#Allow individual display of undo and redo buttons
-info_conf_show_redo#:#When activated it is possible to enable or disable the undo and redo buttons for each individual Etherpad.
+default_show_controls_default_show_redo#:#Undo/Redo Controls
+info_default_show_redo#:#Show the undo/redo controls in all Etherpads by default.
+conf_show_controls_conf_show_redo#:#Undo/Redo Controls Toggleable
+info_conf_show_redo#:#Make it is possible to enable or disable the undo and redo buttons in each Etherpad individually.
 
-default_show_controls_default_show_coloring#:#Show color controls by default
-info_default_show_coloring#:#Enable or disable the color controls for all Etherpad objects by default.
-conf_show_controls_conf_show_coloring#:#Allow individual display of color controls
-info_conf_show_coloring#:#When activated it is possible to enable or disable the color controls for each individual Etherpad.
+default_show_controls_default_show_coloring#:#'Clear Authorship Colours' Control Element
+info_default_show_coloring#:#Show the 'Clear authorship colours' control element for all Etherpads by default.
+conf_show_controls_conf_show_coloring#:#'Clear Authorship Colours' Control Element Toggleable
+info_conf_show_coloring#:#Make it possible to enable or disable the 'Clear Authorship Colours' Control Element in each Etherpad individually.
 
-default_show_controls_default_show_heading#:#Show heading controls by default
-info_default_show_heading#:#Enable or disable the heading controls for all Etherpad objects by default.
-conf_show_controls_conf_show_heading#:#Allow individual display of heading controls
-info_conf_show_heading#:#When activated it is possible to enable or disable the heading controls for each individual Etherpad.
+default_show_controls_default_show_heading#:#Heading Controls
+info_default_show_heading#:#Show the heading controls in all Etherpads by default.
+conf_show_controls_conf_show_heading#:#Heading Controls Toggleable
+info_conf_show_heading#:#Make it possible to enable or disable the heading controls in each Etherpad individually.
 
-default_show_controls_default_show_imp_exp#:#Show import and export functions by default.
-info_default_show_imp_exp#:#Enable or disable the import and export functions for all Etherpad objects by default.
-conf_show_controls_conf_show_import_export#:#Allow individual display of import and export functions
-info_conf_show_import_export#:#When activated it is possible to enable or disable the export functions for each individual Etherpad.
+default_show_controls_default_show_imp_exp#:#Import/Export Controls
+info_default_show_imp_exp#:#Show the import/export controls in all Etherpads by default.
+conf_show_controls_conf_show_import_export#:#Import/Export Controls Toggleable
+info_conf_show_import_export#:#Make it possible to enable or disable the import/export controls in each Etherpad individually.
 
-default_show_controls_default_show_timeline#:#Show timeline by default.
-info_default_show_timeline#:#Enable or disable timeline for all Etherpad objects by default.
-conf_show_controls_conf_show_timeline#:#Allow individual display of timeline
-info_conf_show_timeline#:#When activated it is possible to enable or disable the timeline for each individual Etherpad.
+default_show_controls_default_show_timeline#:#Timeline Controls
+info_default_show_timeline#:#Show the timeline controls in all Etherpads by default.
+conf_show_controls_conf_show_timeline#:#Timeline Controls Toggleable
+info_conf_show_timeline#:#Make it possible to enable or disable the timeline controls in each Etherpad individually.
 
 connection_settings#:#Connection
 pad_settings#:#Presentation
