@@ -1,5 +1,6 @@
 // 
 // English Language File for Etherpad LiteObject Plugin
+// @author Chris Potter
 //
 
 <!-- language file start -->
@@ -64,7 +65,7 @@ info_show_redo#:#
 show_coloring#:#Authorship Highlight Colour Controls
 info_show_coloring#:#Show authorship highlight colour control element, with which authorship highlighting can be deleted.
 show_heading#:#Heading Controls
-info_show_heading#:#Show heading controls. With these, headings for paragraphs can be created.
+info_show_heading#:#Show heading controls, with which headings for paragraphs can be created.
 show_import_export#:#Import/Export Controls
 info_show_import_export#:#Show controls for import/export from/to different file formats. Use with care: Import and Export may not work as expected. Text may also be moved with the ctrl+c/cmd+c command.
 show_timeline#:#Timeline Controls
@@ -115,10 +116,10 @@ info_default_show_colors#:#Turn on authorship highlight colours for all Etherpad
 conf_show_colors#:#Authorship Highlight Colour Toggleable
 info_conf_show_colors#:#Make it possible to enable or disable the display of authorship highlight colours in each Etherpad individually.
 
-default_show_controls#:#Show Control Bar
-info_default_show_controls#:#Display the control bar in all Etherpads by default.
-conf_show_controls#:#Control Bar Toggleable
-info_conf_show_controls#:#Allow the control bar to be enabled or disabled in each Etherpad individually.
+default_show_controls#:#Show Controls by Default
+info_default_show_controls#:#Display the controls in all Etherpads by default. Exactly which controls are shown by default can be configured below.
+conf_show_controls#:#Controls Toggleable
+info_conf_show_controls#:#Allow the controls to be enabled or disabled in each Etherpad individually. Exactly which controls are toggleable in individual Etherpads can be configured below.
 
 default_show_controls_default_show_style#:#Font Styling Controls
 info_default_show_style#:#Show the font styling controls (bold, italic, underline & strike through) in all Etherpads by default.
