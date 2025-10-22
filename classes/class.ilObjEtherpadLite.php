@@ -32,7 +32,7 @@
 class ilObjEtherpadLite extends ilObjectPlugin
 {
     private ilEtherpadLiteConfig $adminSettings;
-    private bool $ReadOnlyID;
+    private $ReadOnlyID;
     private bool $ReadOnly;
     private string $EtherpadText;
     private bool $oldEtherpad;
