@@ -32,7 +32,7 @@
 class ilObjEtherpadLite extends ilObjectPlugin
 {
     private ilEtherpadLiteConfig $adminSettings;
-    private bool $ReadOnlyID;
+    private string $ReadOnlyID;
     private bool $ReadOnly;
     private string $EtherpadText;
     private bool $oldEtherpad;
@@ -99,6 +99,26 @@ class ilObjEtherpadLite extends ilObjectPlugin
             $this->setEtherpadLiteUserMapper($this->getEtherpadLiteConnection()->createAuthorIfNotExistsFor($ilUser->id, $ilUser->firstname . ' ' . $ilUser->lastname));
         } catch (Exception $e) {
             throw new ilCtrlException($e->getMessage());
+        }
+
+        // Routine to fix faulty ReadOnlyIDs which are cause by a bug #44760
+        if ($this->ReadOnlyID === "1") {
+            try {
+                $ilDB = $DIC->database();
+
+                $readOnlyID =  $this->getEtherpadLiteConnection()->getReadOnlyID($this->getEtherpadLiteID());
+                $this->setReadOnlyID($readOnlyID->readOnlyID);
+
+                $ilDB->manipulate(
+                    $up = "UPDATE rep_robj_xpdl_data SET " .
+                        " read_only_id = " . $ilDB->quote($this->getReadOnlyID(), "text") .
+                        " WHERE id = " . $ilDB->quote($this->getId(), "integer")
+                );
+
+            } catch (Exception $e) {
+                throw new ilCtrlException($e->getMessage());
+            }
+
         }
 
     }
@@ -811,7 +831,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
     /**
      * Set readonlyID of Etherpad
      *
-     * @param  boolean  $a_val
+     * @param  string  $a_val
      */
     public function setReadOnlyID($a_val)
     {
@@ -821,7 +841,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
     /**
      * Get readonlyID of Etherpad
      *
-     * @return boolean ReadOnlyID
+     * @return string ReadOnlyID
      */
     public function getReadOnlyID()
     {
