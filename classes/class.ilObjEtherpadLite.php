@@ -40,7 +40,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
     private bool $showChat;
     private bool $showColoring;
     private $online;
-    private $etherpadlite_id;
+    private $etherpadlite_id = null;
     private EtherpadLiteClient $epadlconnect;
     private mixed $epadlusermapper;
     private bool $showRedo;
@@ -102,7 +102,7 @@ class ilObjEtherpadLite extends ilObjectPlugin
         }
 
         // Routine to fix faulty ReadOnlyIDs which are cause by a bug #44760
-        if ($this->ReadOnlyID === "1") {
+        if ($this->etherpadlite_id !== null && $this->ReadOnlyID === "1") {
             try {
                 $ilDB = $DIC->database();
 
