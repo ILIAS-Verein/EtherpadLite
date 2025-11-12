@@ -62,7 +62,7 @@ show_list#:#List Controls
 info_show_list#:#Show list controls, with which ordered and unordered lists can be created.
 show_redo#:#Undo/Redo Controls
 info_show_redo#:#
-show_coloring#:#Authorship Highlight Colour Controls
+show_coloring#:#'Clear Authorship Highlight Colour' Control Element
 info_show_coloring#:#Show authorship highlight colour control element, with which authorship highlighting can be deleted.
 show_heading#:#Heading Controls
 info_show_heading#:#Show heading controls, with which headings for paragraphs can be created.
@@ -113,7 +113,7 @@ info_conf_monospace_font#:#Make it possible to enable or disable the display of 
 
 default_show_colors#:#Show Authorship Highlight Colours
 info_default_show_colors#:#Turn on authorship highlight colours for all Etherpads by default.
-conf_show_colors#:#Authorship Highlight Colour Toggleable
+conf_show_colors#:#Authorship Highlight Colours Toggleable
 info_conf_show_colors#:#Make it possible to enable or disable the display of authorship highlight colours in each Etherpad individually.
 
 default_show_controls#:#Show Controls by Default
@@ -136,10 +136,10 @@ info_default_show_redo#:#Show the undo/redo controls in all Etherpads by default
 conf_show_controls_conf_show_redo#:#Undo/Redo Controls Toggleable
 info_conf_show_redo#:#Make it is possible to enable or disable the undo and redo buttons in each Etherpad individually.
 
-default_show_controls_default_show_coloring#:#'Clear Authorship Colours' Control Element
-info_default_show_coloring#:#Show the 'Clear authorship colours' control element for all Etherpads by default.
-conf_show_controls_conf_show_coloring#:#'Clear Authorship Colours' Control Element Toggleable
-info_conf_show_coloring#:#Make it possible to enable or disable the 'Clear Authorship Colours' Control Element in each Etherpad individually.
+default_show_controls_default_show_coloring#:#'Clear Authorship Highlight Colours' Control Element
+info_default_show_coloring#:#Show the 'clear authorship highlight colours' control element for all Etherpads by default.
+conf_show_controls_conf_show_coloring#:#'Clear Authorship Highlight Colours' Control Element Toggleable
+info_conf_show_coloring#:#Make it possible to enable or disable the 'clear authorship highlight colours' control element in each Etherpad individually.
 
 default_show_controls_default_show_heading#:#Heading Controls
 info_default_show_heading#:#Show the heading controls in all Etherpads by default.
