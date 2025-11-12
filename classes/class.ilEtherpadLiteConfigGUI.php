@@ -219,7 +219,7 @@ class ilEtherpadLiteConfigGUI extends ilPluginConfigGUI
                 "conf_show_heading" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_heading"), $plugin->txt("info_conf_show_heading")),
                 "conf_show_import_export" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_import_export"), $plugin->txt("info_conf_show_import_export")),
                 "conf_show_timeline" => $field->checkbox($plugin->txt("conf_show_controls_conf_show_timeline"), $plugin->txt("info_conf_show_timeline")),
-            ], $plugin->txt("conf_show_controls"), $plugin->txt("conf_show_controls")),
+            ], $plugin->txt("conf_show_controls"), $plugin->txt("info_conf_show_controls")),
         ], $plugin->txt("pad_settings"));
 
 
