@@ -55,19 +55,19 @@ info_show_colors#:#
 show_controls#:#Steuerelemente anzeigen
 info_show_controls#:#
 show_style#:#Steuerelemente für Schriftformatierung
-info_show_style#:#Steuerelemente für Schriftformatierung werden benötigt, um Texte hervorzuheben, zu unterstrichen etc.
+info_show_style#:#Texte können hervorgehoben, unterstrichen und auf verschiedene Weise formatiert werden.
 show_list#:#Steuerelemente für Listenformatierung
-info_show_list#:#Mit Steuerelementen für Listenformatierung können nummerierte und ungeordnete Listen erstellt werden.
+info_show_list#:#Nummerierte und ungeordnete Listen können erstellt werden.
 show_redo#:#Steuerelemente für Rückgängigmachung/Wiederherstellung
-info_show_redo#:#
+info_show_redo#:#Aktionen können rückgängig gemacht oder wiederhergestellt werden.
 show_coloring#:#Steuerelement zur Löschung von Autorenfarben
-info_show_coloring#:#Mit dem Steuerelement zur Löschung Autorenfarben können die Autorenfarben gelöscht werden.
+info_show_coloring#:#Autorenfarben können gelöscht werden.
 show_heading#:#Steuerelemente für Titel
-info_show_heading#:#Mit Steuerelementen für Titel können Überschriften für Absätze erzeugt werden.
+info_show_heading#:#Überschriften können für Absätze erzeugt werden.
 Show_import_export#:#Steuerelemente für Import/Export
-info_show_import_export#:# Steuerelemente für Import/Export von/zu verschiedenen Dateiformaten anzeigen. Achtung diese Funktionen kann zu unbeabsichtigten Ergebnissen führen. Falls das Importieren/Exportieren nicht wie gewünscht funktiert, kann der Inhalt des Etherpads auch durch die Zwischenablage (ctrl+c/cmd+c) verschoben werden.
+info_show_import_export#:#Import- und Exportoptionen können für verschiedene Dateiformate angezeigt werden. Achtung diese Funktionen kann zu unbeabsichtigten Ergebnissen führen. Falls das Importieren/Exportieren nicht wie gewünscht funktiert, kann der Inhalt des Etherpads auch durch die Zwischenablage (ctrl+c/cmd+c) verschoben werden.
 show_timeline#:#Steuerelemente für Timeline
-info_show_timeline#:#Mit der Timeline kann der zeitliche Verlauf des Etherpads nachvollzogen werden.
+info_show_timeline#:#Der zeitliche Verlauf des Etherpads kann nachvollzogen werden.
 enter_fullscreen#:#Vollbildmodus aktivieren
 leave_fullscreen#:#Vollbildmodus deaktivieren
 
