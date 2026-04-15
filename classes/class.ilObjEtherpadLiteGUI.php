@@ -367,7 +367,7 @@ class ilObjEtherpadLiteGUI extends ilObjectPluginGUI
             $pad->setVariable("PORT", ($this->adminSettings->getValue("port")));
             $pad->setVariable("PATH", ($this->adminSettings->getValue("path")));
             $pad->setVariable("ETHERPADLITE_ID", $padID);
-            $pad->setVariable("USER_NAME", rawurlencode($this->user->firstname . ' ' . $this->user->lastname));
+            $pad->setVariable("USER_NAME", rawurlencode($this->user->getFullname()));
             $pad->setVariable("SHOW_CONTROLS", ($this->object->getShowControls() ? "true" : "false"));
             $pad->setVariable("SHOW_CHAT", ($this->object->getShowChat() ? "true" : "false"));
             $pad->setVariable("SHOW_LINE_NUMBERS", ($this->object->getLineNumbers() ? "true" : "false"));

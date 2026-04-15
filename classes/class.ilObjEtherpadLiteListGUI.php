@@ -78,11 +78,6 @@ class ilObjEtherpadLiteListGUI extends ilObjectPluginListGUI
     */
     public function getProperties(): array
     {
-        global $DIC;
-        
-        $lng = $DIC['lng'];
-        $ilUser = $DIC['ilUser'];
-
         $props = array();
 
         if (!ilObjEtherpadLiteAccess::checkOnline($this->obj_id)) {

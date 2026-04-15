@@ -20,17 +20,13 @@ class ilEtherpadLitePlugin extends ilRepositoryObjectPlugin
 
     protected function uninstallCustom(): void
     {
-        global $DIC;
-                
-        $ilDB = $DIC['ilDB'];
-
         // removes plugin tables if they exist
-        if($ilDB->tableExists('rep_robj_xpdl_data')) {
-            $ilDB->dropTable('rep_robj_xpdl_data');
+        if($this->db->tableExists('rep_robj_xpdl_data')) {
+            $this->db->dropTable('rep_robj_xpdl_data');
         }
                     
-        if($ilDB->tableExists('rep_robj_xpdl_adm_set')) {
-            $ilDB->dropTable('rep_robj_xpdl_adm_set');
+        if($this->db->tableExists('rep_robj_xpdl_adm_set')) {
+            $this->db->dropTable('rep_robj_xpdl_adm_set');
         }
     }
 

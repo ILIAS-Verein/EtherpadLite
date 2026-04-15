@@ -47,20 +47,15 @@ class ilObjEtherpadLiteAccess extends ilObjectPluginAccess
     */
     public function _checkAccess(string $cmd, string $permission, int $ref_id, int $obj_id, ?int $user_id = null): bool
     {
-        global $DIC;
-        
-        $ilUser = $DIC['ilUser'];
-        $ilAccess = $DIC['ilAccess'];
-
         if ($user_id == "") {
-            $user_id = $ilUser->getId();
+            $user_id = $this->user->getId();
         }
 
         switch ($permission) {
             case "read":
             case "visible":
                 if (!ilObjEtherpadLiteAccess::checkOnline($obj_id) &&
-                    !$ilAccess->checkAccessOfUser($user_id, "write", "", $ref_id)) {
+                    !$this->access->checkAccessOfUser($user_id, "write", "", $ref_id)) {
                     return false;
                 }
                 break;
@@ -75,7 +70,7 @@ class ilObjEtherpadLiteAccess extends ilObjectPluginAccess
     public static function checkOnline($a_id)
     {
         global $DIC;
-        $ilDB = $DIC['ilDB'];
+        $ilDB = $DIC->database();
         
         $set = $ilDB->query(
             "SELECT is_online FROM rep_robj_xpdl_data ".
