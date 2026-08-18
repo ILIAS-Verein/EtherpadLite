@@ -55,7 +55,7 @@ to your Etherpad settings.js if is not already there and change it from the stan
 
 ### 3. Copy Plugin to ILIAS
 
-   Copy the plugin files to *Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/*
+   Copy the plugin files to *public/Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/*
    in the directory structure of your ILIAS installation
 
 ### 4. Enable Plugin in ILIAS 
@@ -72,7 +72,7 @@ All settings can be configured at that point. It also allows you to configure wh
 
 ## Updating from previous version ##
 
-Replace the files in your ILIAS plugin directory for EtherpadLite (*Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/*).
+Replace the files in your ILIAS plugin directory for EtherpadLite (*public/Customizing/global/plugins/Services/Repository/RepositoryObject/EtherpadLite/*).
 
 Open up the Administration Panel and navigate to the repository object plugin administration. Check if the plugin needs to be updated and please also reload the language files for the plugin.
 
