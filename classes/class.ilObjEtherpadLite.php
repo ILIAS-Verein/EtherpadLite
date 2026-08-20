@@ -268,21 +268,21 @@ class ilObjEtherpadLite extends ilObjectPlugin
         while ($rec = $ilDB->fetchAssoc($set)) {
             $this->setOnline($rec["is_online"]);
             $this->setEtherpadLiteID($rec["epadl_id"]);
-            $this->setShowControls($rec["show_controls"]);
-            $this->setLineNumbers($rec["line_numbers"]);
-            $this->setShowColors($rec["show_colors"]);
-            $this->setShowChat($rec["show_chat"]);
+            $this->setShowControls($rec["show_controls"] ?? true);
+            $this->setLineNumbers($rec["line_numbers"] ?? true);
+            $this->setShowColors($rec["show_colors"] ?? true);
+            $this->setShowChat($rec["show_chat"] ?? true);
             $this->setMonospaceFont($rec["monospace_font"]);
-            $this->setShowStyle($rec["show_style"]);
-            $this->setShowList($rec["show_list"]);
-            $this->setShowRedo($rec["show_redo"]);
-            $this->setShowColoring($rec["show_coloring"]);
-            $this->setShowHeading($rec["show_heading"]);
-            $this->setShowImportExport($rec["show_import_export"]);
-            $this->setShowTimeline($rec["show_timeline"]);
-            $this->setOldEtherpad($rec["old_pad"]);
+            $this->setShowStyle($rec["show_style"] ?? true);
+            $this->setShowList($rec["show_list"] ?? true);
+            $this->setShowRedo($rec["show_redo"] ?? true);
+            $this->setShowColoring($rec["show_coloring"] ?? true);
+            $this->setShowHeading($rec["show_heading"] ?? true);
+            $this->setShowImportExport($rec["show_import_export"] ?? true);
+            $this->setShowTimeline($rec["show_timeline"] ?? true);
+            $this->setOldEtherpad($rec["old_pad"] ?? true);
             $this->setReadOnlyID($rec["read_only_id"]);
-            $this->setReadOnly($rec["read_only"]);
+            $this->setReadOnly($rec["read_only"] ?? false);
         }
         
     }
