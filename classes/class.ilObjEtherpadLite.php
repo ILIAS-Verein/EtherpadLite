@@ -32,26 +32,26 @@
 class ilObjEtherpadLite extends ilObjectPlugin
 {
     private ilEtherpadLiteConfig $adminSettings;
-    private string $ReadOnlyID;
-    private bool $ReadOnly;
-    private string $EtherpadText;
-    private bool $oldEtherpad;
-    private bool $showTimeline;
-    private bool $showChat;
-    private bool $showColoring;
+    private string $ReadOnlyID = '';
+    private bool $ReadOnly = false;
+    private string $EtherpadText = '';
+    private bool $oldEtherpad = false;
+    private bool $showTimeline = true;
+    private bool $showChat = true;
+    private bool $showColoring = true;
     private $online;
     private $etherpadlite_id = null;
     private EtherpadLiteClient $epadlconnect;
     private mixed $epadlusermapper;
-    private bool $showRedo;
-    private bool $showImportExport;
-    private bool $showHeading;
-    private bool $lineNumbers;
-    private bool $monospaceFont;
-    private bool $showColors;
-    private bool $showControls;
-    private bool $showStyle;
-    private bool $showList;
+    private bool $showRedo = true;
+    private bool $showImportExport = true;
+    private bool $showHeading = true;
+    private bool $lineNumbers = true;
+    private bool $monospaceFont = false;
+    private bool $showColors = true;
+    private bool $showControls = true;
+    private bool $showStyle = true;
+    private bool $showList = true;
     private mixed $epadlgroupmapper;
 
     /**
